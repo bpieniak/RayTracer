@@ -3,12 +3,14 @@ package org.pt3k;
 public class Sphere implements hittable{
 
     Vec3 center;
+    Vec3 color;
     float radius;
 
     public Sphere() {}
-    public Sphere(Vec3 cen, float radius) {
+    public Sphere(Vec3 cen, float radius, Vec3 color) {
         this.center = cen;
         this.radius = radius;
+        this.color = color;
     }
 
     @Override

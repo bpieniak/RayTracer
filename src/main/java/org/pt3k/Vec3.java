@@ -1,6 +1,8 @@
 package org.pt3k;
 
 
+import java.lang.annotation.Target;
+import java.util.Random;
 
 public class Vec3 {
 
@@ -48,6 +50,14 @@ public class Vec3 {
         return vec;
     }
 
+    public Vec3 mulvec(final Vec3 v) {
+        Vec3 vec = new Vec3();
+        vec.x = this.x * v.x;
+        vec.y = this.y * v.y;
+        vec.z = this.z * v.z;
+        return vec;
+    }
+
     public Vec3 div(final float t) {
         Vec3 vec = new Vec3();
         vec.x = this.x/t;
@@ -64,6 +74,12 @@ public class Vec3 {
         return vec;
     }
 
+    public void zero() {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+
     public final float length() {
         return (float) Math.sqrt(length_squared());
     }
@@ -78,10 +94,10 @@ public class Vec3 {
                 + this.z * v.z;
     }
 
-    public Vec3 cross(final Vec3 u, final Vec3 v) {
-        return new Vec3(u.y*v.z - u.z*v.y,
-                u.z*v.x - u.x*v.z,
-                u.x*v.y - u.y*v.x);
+    public Vec3 cross(final Vec3 v) {
+        return new Vec3(this.y*v.z - this.z*v.y,
+                this.z*v.x - this.x*v.z,
+                this.x*v.y - this.y*v.x);
     }
 
     public Vec3 unit_vector() {
@@ -104,6 +120,12 @@ public class Vec3 {
         System.out.println("[" + x + "," + y + "," + z + "]");
     }
 
+    public Vec3 random() {
+        Random generator = new Random();
+        //random vector in range -1 to 1
+        return new Vec3(generator.nextFloat()*2-1,generator.nextFloat()*2-1,generator.nextFloat()*2-1);
+    }
+
     float clamp(float x, float min, float max) {
         if(x < min) return min;
         if(x > max) return max;
@@ -112,12 +134,9 @@ public class Vec3 {
 
     public void scale(int samples) {
         float scale = 1.0f/samples;
-        //System.out.println(x + " " + y + " " + z);
-        x = Math.round((255*clamp((scale * x),0,1)));
-        y = Math.round((255*clamp((scale * y),0,1)));
-        z = Math.round((255*clamp((scale * z),0,1)));
-        //System.out.println(x + " " + y + " " + z);
-        //System.out.println();
+        x = (clamp((float) Math.sqrt(scale * x),0,1));
+        y = (clamp((float) Math.sqrt(scale * y),0,1));
+        z = (clamp((float) Math.sqrt(scale * z),0,1));
     }
 }
 
