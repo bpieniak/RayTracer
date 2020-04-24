@@ -1,18 +1,13 @@
 package org.pt3k;
 
-import java.util.Vector;
+import java.util.List;
 
 public class hittable_list implements hittable {
 
-    hittable[] objects = new hittable[64];
-    int count = 0;
+    public List<hittable> list;
 
-    hittable_list() {};
-    hittable_list(hittable object) { add(object); }
-
-    void add(hittable object) {
-        objects[count] = object;
-        count++;
+    hittable_list(List<hittable> list) {
+        this.list = list;
     }
 
     @Override
@@ -21,14 +16,15 @@ public class hittable_list implements hittable {
          boolean hit_anything = false;
          float closest = t_max;
 
-         for(int i = 0; i < count; i++) {
-             if(objects[i].hit(r,t_min,closest,rec)) {
+         for(hittable h : list) {
+             if(h.hit(r,t_min,closest,rec)) {
                  hit_anything = true;
                  closest = rec.t;
                  hitRecord.normal = rec.normal;
                  hitRecord.t = rec.t;
                  hitRecord.front_face = rec.front_face;
                  hitRecord.p = rec.p;
+                 hitRecord.material = rec.material;
              }
          }
          return hit_anything;

@@ -3,41 +3,43 @@ package org.pt3k;
 public class Sphere implements hittable{
 
     Vec3 center;
-    Vec3 color;
     float radius;
+    Material material;
 
     public Sphere() {}
-    public Sphere(Vec3 cen, float radius, Vec3 color) {
+    public Sphere(Vec3 cen, float radius, Material material) {
         this.center = cen;
         this.radius = radius;
-        this.color = color;
+        this.material = material;
     }
 
     @Override
     public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
 
         Vec3 oc = r.origin.sub(center);
-        float a = r.getDirection().length_squared();
-        float half_b = oc.dot(r.getDirection());
-        float c = oc.length_squared() - radius*radius;
-        float discriminant = half_b*half_b-a*c;
+        float a = r.getDirection().dot(r.getDirection());
+        float b = 2.0f * oc.dot(r.getDirection());
+        float c = oc.dot(oc) - radius*radius;
+        float discriminant = b*b - 4.0f*a*c;
 
         if (discriminant > 0) {
             float root = (float) Math.sqrt(discriminant);
-            float temp = (-half_b-root)/a;
+            float temp = (-b-root)/(2.0f*a);
             if(temp > t_min && temp < t_max) {
                 hitRecord.t = temp;
                 hitRecord.p = r.at(temp);
                 Vec3 outward_normal = (r.at(temp).sub(center)).div(radius);
                 hitRecord.set_front_face(r,outward_normal);
+                hitRecord.material = material;
                 return true;
             }
-            temp = (-half_b+root)/a;
+            temp = (-b+root)/(2.0f*a);
             if(temp > t_min && temp < t_max) {
                 hitRecord.t = temp;
                 hitRecord.p = r.at(temp);
                 Vec3 outward_normal = (r.at(temp).sub(center)).div(radius);
                 hitRecord.set_front_face(r,outward_normal);
+                hitRecord.material = material;
                 return true;
             }
         }

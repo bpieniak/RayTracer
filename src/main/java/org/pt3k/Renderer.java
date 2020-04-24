@@ -4,6 +4,8 @@ import com.aparapi.Kernel;
 import com.aparapi.internal.kernel.KernelManager;
 import com.aparapi.internal.kernel.KernelPreferences;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Renderer {
@@ -28,14 +30,6 @@ public class Renderer {
         generator = new Random();
     }
 
-    Vec3 random_in_unit_sphere() {
-        Vec3 p = new Vec3();
-        do {
-            p = p.random();
-        } while (p.length_squared() >= 1);
-        return p;
-    }
-
 
     public Vec3 ray_color(final Ray r, hittable_list world, int depth) {
 
@@ -43,32 +37,75 @@ public class Renderer {
             return new Vec3(0,0,0);
         }
 
-        if(world.hit(r,0,Float.MAX_VALUE,rec)) {
-            Vec3 target = rec.p.add(rec.normal).add(random_in_unit_sphere());
-            return ray_color( new Ray(rec.p,target.sub(rec.p)),world,depth-1).mul(0.5f);
+        if(world.hit(r,0.01f,Float.MAX_VALUE,rec)) {
+            Wrapper wrapper = new Wrapper();
+
+             if(rec.material.scatter(r,rec,wrapper)) {
+                 return ray_color(wrapper.scattered,world,depth-1).mulvec(wrapper.attenuation);
+             }
+
+            return new Vec3(0,0,0);
         }
 
         Vec3 unit_direction = r.getDirection().unit_vector();
         float t = (float) ((unit_direction.getY() + 1)*0.5);
-        return ((new Vec3(1,1,1)).mul(1-t)).add(new Vec3(0.5f,0.7f,1.0f).mul(t));
+        return ((new Vec3(1,1,1)).mul(1-t)).add(new Vec3(0.2f,0.3f,0.6f).mul(t));
+    }
+
+    public byte[] singleCoreRenderer() {
+
+        Camera cam = new Camera(90,(float) width/height,
+                new Vec3(0,0,0.5f),
+                new Vec3(0,0,-1),
+                new Vec3(0,1,0));
+
+        List<hittable> worldList = new ArrayList<>();
+
+        worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(0.8f,0.3f,0.3f))));
+        worldList.add(new Sphere(new Vec3(0,-600.5f,-1), 600, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
+        worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
+        worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.4f,0.3f,0.8f))));
+
+        hittable_list world = new hittable_list(worldList);
+        
+        int i = 0;
+        for(int x = height - 1; x >= 0; x--) {
+            for(int y = 0; y < width; y++) {
+                Vec3 color = new Vec3(0,0,0);
+
+                for(int s =  0; s < numberOfSamples; ++s) {
+                    float u = ((y + generator.nextFloat())/(float)width);
+                    float v = ((x + generator.nextFloat())/(float)height);
+
+                    Ray r = cam.getRay(u,v);
+                    color = color.add(ray_color(r,world,maxDepth));
+                }
+                color.scale(numberOfSamples);
+
+                pixels[3*i] = intToByte((int) (255*color.getX()));
+                pixels[3*i+1] = intToByte((int) (255*color.getY()));
+                pixels[3*i+2] = intToByte((int) (255*color.getZ()));
+                i++;
+            }
+        }
+        return pixels;
     }
 
     public byte[] aparapiRender() {
 
         Camera cam = new Camera(90,(float) width/height,
-                new Vec3(0,0,0),
+                new Vec3(0,0,0.5f),
                 new Vec3(0,0,-1),
                 new Vec3(0,1,0));
 
-        hittable_list world = new hittable_list();
+        List<hittable> worldList = new ArrayList<>();
 
+        worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(1f,1f,1f))));
+        worldList.add(new Sphere(new Vec3(0,-102f,-1), 100, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
+        worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
+        worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
 
-        float R = (float) Math.cos(Math.PI/4);
-        world.add(new Sphere(new Vec3(-R,0,-2), R, new Vec3(1,0,0)));
-        world.add(new Sphere(new Vec3(R,0,-2), R, new Vec3(0,1,0)));
-        world.add(new Sphere(new Vec3(0,-100f-R,-1), 100, new Vec3(0,0,1)));
-
-        Vec3 zero = new Vec3(0,0,0);
+        hittable_list world = new hittable_list(worldList);
 
         Kernel kernel = new Kernel() {
             @Override
@@ -77,14 +114,15 @@ public class Renderer {
                 int x = gid%width;
                 int y = (gid/width);
 
-                Vec3 color = zero;
+                Vec3 color = new Vec3(0,0,0);
 
                 for(int s =  0; s < numberOfSamples; ++s) {
-                    float u = (x + generator.nextFloat())/(float)width;
-                    float v = (y + generator.nextFloat())/(float)height;
+                    float u = ((x + generator.nextFloat())/(float)width);
+                    float v = ((y + generator.nextFloat())/(float)height);
 
                     Ray r = cam.getRay(u,v);
-                   color = color.add(ray_color(r,world,maxDepth));
+                    color = color.add(ray_color(r,world,maxDepth));
+                    //color = color.add(ray_color(r,world));
                 }
                 color.scale(numberOfSamples);
 
@@ -94,7 +132,6 @@ public class Renderer {
             }
         };
         kernel.execute(width*height);
-        fpsCounter();
         kernel.dispose();
         return pixels;
     }

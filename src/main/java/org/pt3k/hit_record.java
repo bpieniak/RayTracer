@@ -5,6 +5,7 @@ public class hit_record {
     public Vec3 normal;
     public float t;
     boolean front_face;
+    Material material;
 
     void set_front_face(Ray r, Vec3 outward_normal) {
         boolean front_face = (r.getDirection().dot(outward_normal) < 0);

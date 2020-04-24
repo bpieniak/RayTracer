@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -135,7 +137,7 @@ public class App extends Application implements EventHandler<ActionEvent> {
         //depth
         Label depthLabel = new Label();
         depthLabel.setFont(new Font("Arial",14));
-        depthLabel.setText("Depth");
+        depthLabel.setText("Ilosc odbic");
         GridPane.setMargin(depthLabel, new Insets(5,2,2,2));
 
         depth = new TextField();
@@ -149,7 +151,6 @@ public class App extends Application implements EventHandler<ActionEvent> {
 
         //end of options grid
         grid.add(options,0,0);
-
 
         Scene scene = new Scene(grid,width,height);
         stage.setScene(scene);
@@ -200,11 +201,12 @@ public class App extends Application implements EventHandler<ActionEvent> {
         pixelWriter = image.getPixelWriter();
         pixelWriter.setPixels(0,0,imageWidth,imageHeight,PixelFormat.getByteRgbInstance(),pixels,0,imageWidth*3);
         imageView = new ImageView(image);
+        addMouseScrolling(imageView);
         grid.add(imageView, 1,0);
     }
     
     public byte[] getRenderedImage() {
-        byte[] unflippedPixels = renderer.aparapiRender();
+        byte[] unflippedPixels = renderer.singleCoreRenderer();
         byte[] pixels = new byte[width*height*3];
 
         //horizontal flip
@@ -213,8 +215,8 @@ public class App extends Application implements EventHandler<ActionEvent> {
             pixels[i+1] = unflippedPixels[unflippedPixels.length-i-2];
             pixels[i+2] = unflippedPixels[unflippedPixels.length-i-1];
         }
-        
-        return pixels;
+        System.out.println("xd");
+        return unflippedPixels;
     }
 
     public void makeTextFieldNumeraticOnly(TextField textField) {
@@ -222,6 +224,19 @@ public class App extends Application implements EventHandler<ActionEvent> {
             if(!newValue.matches("\\d*")) {
                 textField.setText(newValue.replaceAll("[^\\d]", ""));
             }
+        });
+    }
+
+    public void addMouseScrolling(Node node) {
+        node.setOnScroll((ScrollEvent event) -> {
+            double zoomFactor = 1.05;
+            double deltaY = event.getDeltaY();
+            if(deltaY < 0) {
+                zoomFactor = 2.0 - zoomFactor;
+            }
+            node.setScaleX(node.getScaleX()*zoomFactor);
+            node.setScaleY(node.getScaleY()*zoomFactor);
+
         });
     }
 

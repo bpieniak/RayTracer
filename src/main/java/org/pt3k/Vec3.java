@@ -100,6 +100,7 @@ public class Vec3 {
                 this.x*v.y - this.y*v.x);
     }
 
+
     public Vec3 unit_vector() {
         return this.div(this.length());
     }
@@ -120,10 +121,8 @@ public class Vec3 {
         System.out.println("[" + x + "," + y + "," + z + "]");
     }
 
-    public Vec3 random() {
-        Random generator = new Random();
-        //random vector in range -1 to 1
-        return new Vec3(generator.nextFloat()*2-1,generator.nextFloat()*2-1,generator.nextFloat()*2-1);
+    public static Vec3 reflect(Vec3 v, Vec3 n) {
+        return v.sub(n.mul(2*v.dot(n)));
     }
 
     float clamp(float x, float min, float max) {
