@@ -8,7 +8,7 @@ public class hit_record {
     Material material;
 
     void set_front_face(Ray r, Vec3 outward_normal) {
-        boolean front_face = (r.getDirection().dot(outward_normal) < 0);
+        front_face = (r.getDirection().dot(outward_normal) < 0);
         if(front_face) {
             normal = outward_normal;
         } else {

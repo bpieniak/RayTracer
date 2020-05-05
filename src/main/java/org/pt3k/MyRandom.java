@@ -29,4 +29,8 @@ public class MyRandom {
             return inUnitSphere.inverse();
         }
     }
+
+    public static Vec3 randomVector() {
+        return new Vec3((float) Math.random(),(float) Math.random(),(float) Math.random());
+    }
 }

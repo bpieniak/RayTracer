@@ -52,24 +52,58 @@ public class Renderer {
         return ((new Vec3(1,1,1)).mul(1-t)).add(new Vec3(0.2f,0.3f,0.6f).mul(t));
     }
 
+    public ArrayList<hittable> randomScene() {
+        ArrayList<hittable> worldList = new ArrayList<>();
+
+        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(new Vec3(0.5f,0.5f,0.5f))));
+
+        int i = 1;
+        for(int a = -11; a < 11; a++) {
+            for(int b = -11; b < 11; b++) {
+                float choose_mat = (float) Math.random();
+                Vec3 center = new Vec3((float )(a + 0.9*Math.random()), 0.2f, (float )(b + 0.9*Math.random()));
+
+                if(choose_mat < 0.9) {
+                    Vec3 albedo = MyRandom.randomVector().mulvec(MyRandom.randomVector());
+                    worldList.add(new Sphere(center,0.2f,new Lambertian(albedo)));
+                } else if(choose_mat < 0.95) {
+                    Vec3 albedo = MyRandom.randomVector();
+                    worldList.add(new Sphere(center, 0.2f, new Metal(albedo)));
+                } else {
+                    worldList.add(new Sphere(center,0.2f, new Dielectric(1.5f)));
+                }
+            }
+        }
+
+        worldList.add(new Sphere(new Vec3(0,1,0),1,new Dielectric(1.5f)));
+        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Lambertian(new Vec3(0.4f,0.2f,0.1f))));
+        worldList.add(new Sphere(new Vec3(4,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
+
+        return worldList;
+    }
+
     public byte[] singleCoreRenderer() {
 
-        Camera cam = new Camera(90,(float) width/height,
-                new Vec3(0,0,0.5f),
-                new Vec3(0,0,-1),
+        Camera cam = new Camera(20,(float) width/height,
+                new Vec3(13,2,3),
+                new Vec3(0,0,0),
                 new Vec3(0,1,0));
 
-        List<hittable> worldList = new ArrayList<>();
+        List<hittable> worldList = randomScene();
 
-        worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(0.8f,0.3f,0.3f))));
-        worldList.add(new Sphere(new Vec3(0,-600.5f,-1), 600, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
-        worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
-        worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.4f,0.3f,0.8f))));
+        //worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(0.8f,0.3f,0.3f))));
+        //worldList.add(new Sphere(new Vec3(0,-600.5f,-1), 600, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
+        //worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Dielectric(1.5f)));
+        //worldList.add(new Sphere(new Vec3(1,0,-1), -0.48f, new Dielectric(1.5f)));
+        //worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.4f,0.3f,0.8f))));
 
         hittable_list world = new hittable_list(worldList);
-        
+        System.out.println("aaaa");
         int i = 0;
         for(int x = height - 1; x >= 0; x--) {
+            if(x%20==0) {
+                System.out.println(x);
+            }
             for(int y = 0; y < width; y++) {
                 Vec3 color = new Vec3(0,0,0);
 
@@ -94,16 +128,16 @@ public class Renderer {
     public byte[] aparapiRender() {
 
         Camera cam = new Camera(90,(float) width/height,
-                new Vec3(0,0,0.5f),
-                new Vec3(0,0,-1),
+                new Vec3(13,2,3),
+                new Vec3(0,0,0),
                 new Vec3(0,1,0));
 
-        List<hittable> worldList = new ArrayList<>();
+        List<hittable> worldList = randomScene();
 
-        worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(1f,1f,1f))));
-        worldList.add(new Sphere(new Vec3(0,-102f,-1), 100, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
-        worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
-        worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
+        //worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(1f,1f,1f))));
+        //worldList.add(new Sphere(new Vec3(0,-102f,-1), 100, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
+        //worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
+        //worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
 
         hittable_list world = new hittable_list(worldList);
 

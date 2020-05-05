@@ -125,6 +125,27 @@ public class Vec3 {
         return v.sub(n.mul(2*v.dot(n)));
     }
 
+    public static Vec3 refract(Vec3 uv, Vec3 n, float etaiOverEtat) {
+        float cos_theta = uv.inverse().dot(n);
+        Vec3 rOutParallel = (uv.add(n.mul(cos_theta))).mul(etaiOverEtat);
+        Vec3 rOutPerp = n.mul((float) -Math.sqrt(1.0-rOutParallel.length_squared()));
+        return  rOutParallel.add(rOutPerp);
+    }
+
+     /*
+    public static boolean refract(Vec3 uv, Vec3 n, float etaiOverEtat, Wrapper wrapper) {
+        Vec3 unitVector = uv.unit_vector();
+        float cos_a1 = -1.0f*unitVector.dot(n);
+        float temp = 1.0f - etaiOverEtat*etaiOverEtat*(1.0f - cos_a1*cos_a1);
+        if(temp > 0) {
+            wrapper.refracted = unitVector.mul(etaiOverEtat).add(n.mul((float) (etaiOverEtat*cos_a1-Math.sqrt(temp))));
+            return true;
+        } else {
+            return false;
+        }
+    }*/
+
+
     float clamp(float x, float min, float max) {
         if(x < min) return min;
         if(x > max) return max;
