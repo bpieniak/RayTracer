@@ -1,31 +1,31 @@
 package org.pt3k;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+import javax.swing.event.ChangeListener;
 
 
 public class App extends Application implements EventHandler<ActionEvent> {
@@ -33,6 +33,8 @@ public class App extends Application implements EventHandler<ActionEvent> {
     private static Renderer renderer;
 
     GridPane grid;
+
+    AnchorPane ap;
 
     Button button;
     PixelWriter pixelWriter;
@@ -59,7 +61,6 @@ public class App extends Application implements EventHandler<ActionEvent> {
 
         stage.setMinWidth(300);
         stage.setTitle("Ray Tracer");
-
 
 
         //Grid
@@ -102,7 +103,7 @@ public class App extends Application implements EventHandler<ActionEvent> {
         resolutionX = new TextField();
         resolutionX.setStyle("-fx-min-width: 90;" +
                 "-fx-max-width: 100");
-        resolutionX.setText("800");
+        resolutionX.setText("200");
         makeTextFieldNumeraticOnly(resolutionX);
         resolutionPanel.add(resolutionX,0,1);
 
@@ -113,7 +114,7 @@ public class App extends Application implements EventHandler<ActionEvent> {
         resolutionY = new TextField();
         resolutionY.setStyle("-fx-min-width: 90;" +
                 "-fx-max-width: 100");
-        resolutionY.setText("600");
+        resolutionY.setText("100");
         makeTextFieldNumeraticOnly(resolutionY);
         resolutionPanel.add(resolutionY,2,1);
 
@@ -164,11 +165,11 @@ public class App extends Application implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
 
         if(actionEvent.getSource()==button) {
-            buttonHandle();
+            generateImage();
         }
     }
 
-    private void buttonHandle() {
+    private void generateImage() {
 
         int newWidth = imageWidth;
         int newHeight = imageHeight;
@@ -193,7 +194,7 @@ public class App extends Application implements EventHandler<ActionEvent> {
         }
         System.out.println(imageWidth + "x" + imageHeight);
 
-        byte[] pixels = getRenderedImage();
+        byte[] pixels = renderer.singleCoreRenderer();
 
         grid.getChildren().remove(imageView);
 
@@ -202,29 +203,16 @@ public class App extends Application implements EventHandler<ActionEvent> {
         pixelWriter.setPixels(0,0,imageWidth,imageHeight,PixelFormat.getByteRgbInstance(),pixels,0,imageWidth*3);
         imageView = new ImageView(image);
         addMouseScrolling(imageView);
-        grid.add(imageView, 1,0);
-    }
-    
-    public byte[] getRenderedImage() {
-        byte[] unflippedPixels = renderer.singleCoreRenderer();
-        byte[] pixels = new byte[width*height*3];
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(height);
 
-        //horizontal flip
-        for(int i = 0; i < unflippedPixels.length; i=i+3) {
-            pixels[i] = unflippedPixels[unflippedPixels.length-i-3];
-            pixels[i+1] = unflippedPixels[unflippedPixels.length-i-2];
-            pixels[i+2] = unflippedPixels[unflippedPixels.length-i-1];
-        }
-        System.out.println("xd");
-        return unflippedPixels;
-    }
+        ScrollPane sp = new ScrollPane();
+        sp.setContent(imageView);
+        sp.setFitToHeight(true);
+        sp.setFitToWidth(true);
 
-    public void makeTextFieldNumeraticOnly(TextField textField) {
-        textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(!newValue.matches("\\d*")) {
-                textField.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+
+        grid.add(sp, 1,0);
     }
 
     public void addMouseScrolling(Node node) {
@@ -240,4 +228,11 @@ public class App extends Application implements EventHandler<ActionEvent> {
         });
     }
 
+    public void makeTextFieldNumeraticOnly(TextField textField) {
+        textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*")) {
+                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+    }
 }
