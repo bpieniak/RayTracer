@@ -1,9 +1,5 @@
 package org.pt3k;
 
-import com.aparapi.Kernel;
-import com.aparapi.internal.kernel.KernelManager;
-import com.aparapi.internal.kernel.KernelPreferences;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -122,51 +118,6 @@ public class Renderer {
                 i++;
             }
         }
-        return pixels;
-    }
-
-    public byte[] aparapiRender() {
-
-        Camera cam = new Camera(90,(float) width/height,
-                new Vec3(13,2,3),
-                new Vec3(0,0,0),
-                new Vec3(0,1,0));
-
-        List<hittable> worldList = randomScene();
-
-        //worldList.add(new Sphere(new Vec3(0,0,-1), 0.5f, new Lambertian(new Vec3(1f,1f,1f))));
-        //worldList.add(new Sphere(new Vec3(0,-102f,-1), 100, new Lambertian(new Vec3(0.3f,0.7f,0.1f)) ));
-        //worldList.add(new Sphere(new Vec3(1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
-        //worldList.add(new Sphere(new Vec3(-1,0,-1), 0.5f, new Metal(new Vec3(0.8f,0.6f,0.2f))));
-
-        hittable_list world = new hittable_list(worldList);
-
-        Kernel kernel = new Kernel() {
-            @Override
-            public void run() {
-                int gid = getGlobalId();
-                int x = gid%width;
-                int y = (gid/width);
-
-                Vec3 color = new Vec3(0,0,0);
-
-                for(int s =  0; s < numberOfSamples; ++s) {
-                    float u = ((x + generator.nextFloat())/(float)width);
-                    float v = ((y + generator.nextFloat())/(float)height);
-
-                    Ray r = cam.getRay(u,v);
-                    color = color.add(ray_color(r,world,maxDepth));
-                    //color = color.add(ray_color(r,world));
-                }
-                color.scale(numberOfSamples);
-
-                pixels[3*gid] = intToByte((int) (255*color.getX()));
-                pixels[3*gid + 1] = intToByte((int) (255*color.getY()));
-                pixels[3*gid + 2] = intToByte((int) (255*color.getZ()));
-            }
-        };
-        kernel.execute(width*height);
-        kernel.dispose();
         return pixels;
     }
 
