@@ -15,7 +15,7 @@ public class MyRandom {
     }
 
     public static float randomFloat() {
-        generator = new Random();
+        generator = new Random(System.currentTimeMillis());
 
         return (generator.nextFloat()*2-1);
     }

@@ -1,10 +1,6 @@
 package org.pt3k;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -42,7 +38,7 @@ public class AppController {
     }
 
     @FXML
-    private void generateImage() {
+    private void generateImage() throws InterruptedException {
 
         width = 200;
         height = 200;
@@ -59,7 +55,7 @@ public class AppController {
         }
 
         long start = System.currentTimeMillis();
-        byte[] pixels = (new Renderer(width,height,nSamples,nDepth)).singleCoreRenderer();
+        byte[] pixels = (new MultithreadRenderer(width,height,nSamples,nDepth)).render();
         long finish = System.currentTimeMillis();
 
         WritableImage image = new WritableImage(width,height);
