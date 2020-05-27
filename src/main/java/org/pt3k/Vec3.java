@@ -132,20 +132,6 @@ public class Vec3 {
         return  rOutParallel.add(rOutPerp);
     }
 
-     /*
-    public static boolean refract(Vec3 uv, Vec3 n, float etaiOverEtat, Wrapper wrapper) {
-        Vec3 unitVector = uv.unit_vector();
-        float cos_a1 = -1.0f*unitVector.dot(n);
-        float temp = 1.0f - etaiOverEtat*etaiOverEtat*(1.0f - cos_a1*cos_a1);
-        if(temp > 0) {
-            wrapper.refracted = unitVector.mul(etaiOverEtat).add(n.mul((float) (etaiOverEtat*cos_a1-Math.sqrt(temp))));
-            return true;
-        } else {
-            return false;
-        }
-    }*/
-
-
     float clamp(float x, float min, float max) {
         if(x < min) return min;
         if(x > max) return max;

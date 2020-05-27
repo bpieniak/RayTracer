@@ -42,7 +42,7 @@ public class Worker implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(Thread.currentThread() + " " + start + " " + end);
+        //System.out.println(Thread.currentThread() + " " + start + " " + end);
 
         Camera cam = new Camera(20,(float) width/height,
                 new Vec3(13,2,3),
@@ -51,7 +51,7 @@ public class Worker implements Runnable {
 
         Scene scene = new Scene(sceneArray);
 
-        Vec3 backgroud = new Vec3(0,0,0);
+        Vec3 backgroud = new Vec3(0.2f,0.2f,0.2f);
 
         for(int x = start; x < end; x++) {
             for(int y = 0; y < width; y++) {
@@ -93,22 +93,11 @@ public class Worker implements Runnable {
             return emitted;
 
         return (ray_color(wrapper.scattered,background,world,depth-1).mulvec(wrapper.attenuation)).add(emitted);
-
-
-        /*
-        if(rec.material.scatter(r,rec,wrapper)) {
-            return ray_color(wrapper.scattered,world,depth-1).mulvec(wrapper.attenuation);
-        }
-
-        return new Vec3(0,0,0);
-
-        Vec3 unit_direction = r.getDirection().unit_vector();
-        float t = (float) ((unit_direction.getY() + 1)*0.5);
-        return ((new Vec3(1,1,1)).mul(1-t)).add(new Vec3(0.2f,0.3f,0.6f).mul(t));*/
     }
 
     private byte intToByte(int i) {
-        if(i >= 128) {
+
+        if(i > 128) {
             return (byte) (i-256);
         }
         return (byte) i;

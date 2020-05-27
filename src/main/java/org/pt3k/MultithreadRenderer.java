@@ -17,8 +17,6 @@ public class MultithreadRenderer {
     hit_record rec;
     Random generator;
 
-    Camera cam;
-
     public MultithreadRenderer(int width, int height, int numberOfSamples, int maxDepth) {
         this.width = width;
         this.height = height;
@@ -33,7 +31,7 @@ public class MultithreadRenderer {
     public byte[] render() throws InterruptedException {
 
         int threadCount = Runtime.getRuntime().availableProcessors();
-        System.out.println(threadCount);
+        //System.out.println(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         ArrayList<hittable> randomScene = Scene.randomScene();
@@ -52,7 +50,7 @@ public class MultithreadRenderer {
             image[i+2] = pixels[pixels.length-i-1];
         }
 
-        System.out.println(Arrays.toString(pixels));
+        //System.out.println(Arrays.toString(pixels));
 
         return image;
     }
