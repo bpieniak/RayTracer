@@ -20,4 +20,9 @@ public class Metal implements Material{
         wrapper.attenuation = albedo;
         return reflected.dot(rec.normal) > 0;
     }
+
+    @Override
+    public Vec3 emitted(float u, float v, Vec3 p) {
+        return new Vec3(0,0,0);
+    }
 }

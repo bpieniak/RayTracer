@@ -8,4 +8,5 @@ import org.pt3k.hit_record;
 public interface Material {
 
     boolean scatter(Ray r_in, hit_record rec, Wrapper wrapper);
+    Vec3 emitted(float u, float v, Vec3 p);
 }

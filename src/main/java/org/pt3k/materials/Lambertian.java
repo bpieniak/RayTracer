@@ -16,4 +16,9 @@ public class Lambertian implements Material {
         wrapper.attenuation = albedo.value(rec.u,rec.v,rec.p);
         return true;
     }
+
+    @Override
+    public Vec3 emitted(float u, float v, Vec3 p) {
+        return new Vec3(0,0,0);
+    }
 }

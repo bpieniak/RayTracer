@@ -62,7 +62,7 @@ public class Worker implements Runnable {
                     float v = ((x + MyRandom.randomFloatInRange(-1,1))/(float)height);
 
                     Ray r = cam.getRay(u,v);
-                    color = color.add(ray_color(r,scene,maxDepth));
+                    color = color.add(ray_color(r,backgroud,scene,maxDepth));
                 }
                 color.scale(numberOfSamples);
 
@@ -75,25 +75,36 @@ public class Worker implements Runnable {
         countDownLatch.countDown();
     }
 
-    public Vec3 ray_color(final Ray r,Scene world, int depth) {
+    public Vec3 ray_color(final Ray r, Vec3 background,Scene world, int depth) {
 
         if(depth <= 0) {
             return new Vec3(0,0,0);
         }
 
-        if(world.hit(r,0.01f,Float.MAX_VALUE,rec)) {
-            Wrapper wrapper = new Wrapper();
-
-            if(rec.material.scatter(r,rec,wrapper)) {
-                return ray_color(wrapper.scattered,world,depth-1).mulvec(wrapper.attenuation);
-            }
-
-            return new Vec3(0,0,0);
+        if(!world.hit(r,0.01f,Float.MAX_VALUE,rec)) {
+            return background;
         }
+        Wrapper wrapper = new Wrapper();
+
+
+        Vec3 emitted = rec.material.emitted(rec.u,rec.v,rec.p);
+
+        if(!rec.material.scatter(r,rec,wrapper))
+            return emitted;
+
+        return (ray_color(wrapper.scattered,background,world,depth-1).mulvec(wrapper.attenuation)).add(emitted);
+
+
+        /*
+        if(rec.material.scatter(r,rec,wrapper)) {
+            return ray_color(wrapper.scattered,world,depth-1).mulvec(wrapper.attenuation);
+        }
+
+        return new Vec3(0,0,0);
 
         Vec3 unit_direction = r.getDirection().unit_vector();
         float t = (float) ((unit_direction.getY() + 1)*0.5);
-        return ((new Vec3(1,1,1)).mul(1-t)).add(new Vec3(0.2f,0.3f,0.6f).mul(t));
+        return ((new Vec3(1,1,1)).mul(1-t)).add(new Vec3(0.2f,0.3f,0.6f).mul(t));*/
     }
 
     private byte intToByte(int i) {

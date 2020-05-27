@@ -43,6 +43,8 @@ public class Scene implements hittable {
                 new SolidColor(0.9f,0.9f,0.9f)
         );
 
+        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(2,2,2));
+
         worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
 
         int i = 1;
@@ -66,6 +68,8 @@ public class Scene implements hittable {
         worldList.add(new Sphere(new Vec3(0,1,0),1,new Dielectric(1.5f)));
         worldList.add(new Sphere(new Vec3(-4,1,0),1,new Lambertian(new SolidColor(0.4f,0.2f,0.1f))));
         worldList.add(new Sphere(new Vec3(4,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
+
+        worldList.add(new Sphere(new Vec3(3,1.5f,2),0.5f,diffuseLight));
 
         return worldList;
     }

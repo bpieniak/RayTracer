@@ -48,6 +48,11 @@ public class Dielectric implements Material {
         return true;
     }
 
+    @Override
+    public Vec3 emitted(float u, float v, Vec3 p) {
+        return new Vec3(0,0,0);
+    }
+
     float schlick(float cosine, float refIdx) {
         float r0 = (1-refIdx)/(1+refIdx);
         r0 = r0*r0;
