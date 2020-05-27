@@ -1,5 +1,7 @@
 package org.pt3k;
 
+import org.pt3k.material.Material;
+
 public class Sphere implements hittable{
 
     Vec3 center;
