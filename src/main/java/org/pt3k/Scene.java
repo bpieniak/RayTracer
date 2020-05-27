@@ -1,8 +1,6 @@
 package org.pt3k;
 
-import org.pt3k.materials.Dielectric;
-import org.pt3k.materials.Lambertian;
-import org.pt3k.materials.Metal;
+import org.pt3k.materials.*;
 import org.pt3k.shapes.Sphere;
 import org.pt3k.shapes.hittable;
 
@@ -40,17 +38,22 @@ public class Scene implements hittable {
     public static ArrayList<hittable> randomScene() {
         ArrayList<hittable> worldList = new ArrayList<>();
 
-        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(new Vec3(0.5f,0.5f,0.5f))));
+        Checker checker = new Checker(
+                new SolidColor(0.2f,0.8f,0.2f),
+                new SolidColor(0.9f,0.9f,0.9f)
+        );
+
+        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
 
         int i = 1;
-        for(int a = -11; a < 11; a++) {
-            for(int b = -11; b < 11; b++) {
+        for(int a = -6; a < 6; a = a+2) {
+            for(int b = -6; b < 6; b = b+2) {
                 float choose_mat = (float) Math.random();
-                Vec3 center = new Vec3((float )(a + 0.9*Math.random()), 0.2f, (float )(b + 0.9*Math.random()));
+                Vec3 center = new Vec3((float )(a + 2*Math.random()), 0.2f, (float )(b + 2*Math.random()));
 
                 if(choose_mat < 0.9) {
                     Vec3 albedo = MyRandom.randomVector().mulvec(MyRandom.randomVector());
-                    worldList.add(new Sphere(center,0.2f,new Lambertian(albedo)));
+                    worldList.add(new Sphere(center,0.2f,new Lambertian(new SolidColor(albedo))));
                 } else if(choose_mat < 0.95) {
                     Vec3 albedo = MyRandom.randomVector();
                     worldList.add(new Sphere(center, 0.2f, new Metal(albedo)));
@@ -61,7 +64,7 @@ public class Scene implements hittable {
         }
 
         worldList.add(new Sphere(new Vec3(0,1,0),1,new Dielectric(1.5f)));
-        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Lambertian(new Vec3(0.4f,0.2f,0.1f))));
+        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Lambertian(new SolidColor(0.4f,0.2f,0.1f))));
         worldList.add(new Sphere(new Vec3(4,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
 
         return worldList;

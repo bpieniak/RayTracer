@@ -51,13 +51,15 @@ public class Worker implements Runnable {
 
         Scene scene = new Scene(sceneArray);
 
+        Vec3 backgroud = new Vec3(0,0,0);
+
         for(int x = start; x < end; x++) {
             for(int y = 0; y < width; y++) {
                 Vec3 color = new Vec3(0,0,0);
 
                 for(int s =  0; s < numberOfSamples; ++s) {
-                    float u = ((y + generator.nextFloat())/(float)width);
-                    float v = ((x + generator.nextFloat())/(float)height);
+                    float u = ((y + MyRandom.randomFloatInRange(-1,1))/(float)width);
+                    float v = ((x + MyRandom.randomFloatInRange(-1,1))/(float)height);
 
                     Ray r = cam.getRay(u,v);
                     color = color.add(ray_color(r,scene,maxDepth));
@@ -73,7 +75,7 @@ public class Worker implements Runnable {
         countDownLatch.countDown();
     }
 
-    public Vec3 ray_color(final Ray r, Scene world, int depth) {
+    public Vec3 ray_color(final Ray r,Scene world, int depth) {
 
         if(depth <= 0) {
             return new Vec3(0,0,0);

@@ -51,4 +51,12 @@ public class Sphere implements hittable{
 
         return false;
     }
+
+    void getSphereUV(Vec3 p, float u, float v) {
+
+        double phi = Math.atan2(p.getZ(),p.getX());
+        double theta = Math.asin(p.getY());
+        u = (float) (1-(phi+Math.PI)/(2*Math.PI));
+        v = (float) ((theta + Math.PI/2)/Math.PI);
+    }
 }

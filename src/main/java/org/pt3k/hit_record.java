@@ -5,9 +5,12 @@ import org.pt3k.materials.Material;
 public class hit_record {
     public Vec3 p;
     public Vec3 normal;
-    public float t;
-    public boolean front_face;
     public Material material;
+    public float t;
+    public float u;
+    public float v;
+    public boolean front_face;
+
 
     public void set_front_face(Ray r, Vec3 outward_normal) {
         front_face = (r.getDirection().dot(outward_normal) < 0);
