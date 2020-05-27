@@ -1,10 +1,15 @@
-package org.pt3k;
+package org.pt3k.shapes;
+
+import org.pt3k.Ray;
+import org.pt3k.Vec3;
+import org.pt3k.hit_record;
+import org.pt3k.materials.Material;
 
 public class Sphere implements hittable{
 
-    Vec3 center;
-    float radius;
-    Material material;
+    public Vec3 center;
+    public float radius;
+    public Material material;
 
     public Sphere() {}
     public Sphere(Vec3 cen, float radius, Material material) {

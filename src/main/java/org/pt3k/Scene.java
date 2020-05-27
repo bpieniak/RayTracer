@@ -1,5 +1,11 @@
 package org.pt3k;
 
+import org.pt3k.materials.Dielectric;
+import org.pt3k.materials.Lambertian;
+import org.pt3k.materials.Metal;
+import org.pt3k.shapes.Sphere;
+import org.pt3k.shapes.hittable;
+
 import java.util.ArrayList;
 import java.util.List;
 

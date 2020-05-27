@@ -21,7 +21,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        URL url = Paths.get("src/main/java/org/pt3k/Interface.fxml").toUri().toURL();
+        URL url = Paths.get("src/main/java/org/pt3k/GUI/Interface.fxml").toUri().toURL();
         Parent root = FXMLLoader.load(url);
 
         Scene scene = new Scene(root, 800, 600);

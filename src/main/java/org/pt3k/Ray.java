@@ -2,8 +2,8 @@ package org.pt3k;
 
 
 public class Ray {
-    Vec3 origin;
-    Vec3 direction;
+    public Vec3 origin;
+    public Vec3 direction;
 
     public Ray() {}
 

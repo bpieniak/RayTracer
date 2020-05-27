@@ -1,9 +1,9 @@
 package org.pt3k;
 
-import java.lang.reflect.Array;
+import org.pt3k.shapes.hittable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 

@@ -1,5 +1,7 @@
-package org.pt3k;
+package org.pt3k.GUI;
 
+import com.sun.javafx.logging.PlatformLogger;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -10,6 +12,14 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import org.pt3k.MultithreadRenderer;
+
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class AppController {
 
@@ -24,6 +34,7 @@ public class AppController {
     @FXML Label statusLabel;
 
     int width, height;
+    WritableImage image;
 
     public AppController() {
 
@@ -58,9 +69,10 @@ public class AppController {
         byte[] pixels = (new MultithreadRenderer(width,height,nSamples,nDepth)).render();
         long finish = System.currentTimeMillis();
 
-        WritableImage image = new WritableImage(width,height);
+        image = new WritableImage(width,height);
         PixelWriter pixelWriter = image.getPixelWriter();
         pixelWriter.setPixels(0,0,width,height, PixelFormat.getByteRgbInstance(),pixels,0,width*3);
+
 
         imageView.setImage(image);
 
@@ -85,6 +97,19 @@ public class AppController {
         }
 
         statusLabel.setText("Wygenerowano w " + (finish-start)/1000.0 + " sekund");
+    }
+
+    @FXML
+    public void saveImage() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.selectedExtensionFilterProperty();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null && image != null) {
+            RenderedImage renderedImage = SwingFXUtils.fromFXImage(image, null);
+            ImageIO.write(renderedImage, "png", file);
+        }
     }
 
     public void makeTextFieldNumeraticOnly(TextField textField) {
