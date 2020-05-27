@@ -1,4 +1,6 @@
-package org.pt3k;
+package org.pt3k.material;
+
+import org.pt3k.*;
 
 public class Lambertian implements Material {
 

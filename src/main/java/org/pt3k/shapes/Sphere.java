@@ -1,8 +1,12 @@
-package org.pt3k;
+package org.pt3k.shapes;
 
+import org.pt3k.Aabb;
+import org.pt3k.Ray;
+import org.pt3k.Vec3;
+import org.pt3k.hit_record;
 import org.pt3k.material.Material;
 
-public class Sphere implements hittable{
+public class Sphere implements hittable {
 
     Vec3 center;
     float radius;
@@ -47,5 +51,13 @@ public class Sphere implements hittable{
         }
 
         return false;
+    }
+
+    @Override
+    public boolean boundingBox(float t0, float t1, Aabb outputBox) {
+        outputBox = new Aabb(
+                center.sub(new Vec3(radius,radius,radius)),
+                center.add(new Vec3(radius,radius,radius)));
+        return true;
     }
 }

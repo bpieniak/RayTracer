@@ -1,9 +1,9 @@
 package org.pt3k;
 
 public class Wrapper{
-    Ray scattered;
-    Vec3 refracted;
-    Vec3 attenuation;
+    public Ray scattered;
+    public Vec3 refracted;
+    public Vec3 attenuation;
 
     public Wrapper() {
         scattered = new Ray();

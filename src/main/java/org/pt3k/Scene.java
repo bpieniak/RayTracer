@@ -1,5 +1,11 @@
 package org.pt3k;
 
+import org.pt3k.material.Dielectric;
+import org.pt3k.material.Lambertian;
+import org.pt3k.material.Metal;
+import org.pt3k.shapes.Sphere;
+import org.pt3k.shapes.hittable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +35,39 @@ public class Scene implements hittable {
              }
          }
          return hit_anything;
+    }
+
+    @Override
+    public boolean boundingBox(float t0, float t1, Aabb outputBox) {
+        if(list.isEmpty())
+            return false;
+
+        Aabb temp_box = new Aabb();
+        boolean first_box = true;
+
+        for(hittable h : list) {
+            if(!h.boundingBox(t0,t1,temp_box))
+                return false;
+            outputBox = first_box ? temp_box : surroundingBox(outputBox,temp_box);
+            first_box = false;
+        }
+        return true;
+    }
+
+    private Aabb surroundingBox(Aabb box0, Aabb box1) {
+        Vec3 small = new Vec3(Math.min(box0.min.getX(), box1.min.getX()),
+                Math.min(box0.min.getY(), box1.min.getY()),
+                Math.min(box0.min.getZ(), box1.min.getZ()));
+
+        Vec3 big = new Vec3(Math.max(box0.max.getX(), box1.max.getX()),
+                Math.max(box0.max.getY(), box1.max.getY()),
+                Math.max(box0.max.getZ(), box1.max.getZ()));
+
+        return new Aabb(small,big);
+    }
+
+    public List<hittable> getList() {
+        return list;
     }
 
     public static ArrayList<hittable> randomScene() {

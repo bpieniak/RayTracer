@@ -1,13 +1,15 @@
 package org.pt3k;
 
+import org.pt3k.material.Material;
+
 public class hit_record {
     public Vec3 p;
     public Vec3 normal;
     public float t;
-    boolean front_face;
-    Material material;
+    public boolean front_face;
+    public Material material;
 
-    void set_front_face(Ray r, Vec3 outward_normal) {
+    public void set_front_face(Ray r, Vec3 outward_normal) {
         front_face = (r.getDirection().dot(outward_normal) < 0);
         if(front_face) {
             normal = outward_normal;

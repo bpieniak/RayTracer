@@ -1,4 +1,9 @@
-package org.pt3k;
+package org.pt3k.material;
+
+import org.pt3k.Ray;
+import org.pt3k.Vec3;
+import org.pt3k.Wrapper;
+import org.pt3k.hit_record;
 
 import java.util.Random;
 
@@ -13,7 +18,7 @@ public class Dielectric implements Material {
 
     @Override
     public boolean scatter(Ray r_in, hit_record rec, Wrapper wrapper) {
-        wrapper.attenuation = new  Vec3(1,1,1);
+        wrapper.attenuation = new Vec3(1,1,1);
         float etaiOverEtat;
         if (rec.front_face) {
             etaiOverEtat = (1.0f/refIdx);

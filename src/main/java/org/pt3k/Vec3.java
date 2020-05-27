@@ -117,6 +117,17 @@ public class Vec3 {
         return z;
     }
 
+    public float getElement(int i) {
+        if(i == 0) {
+            return getX();
+        } else if(i == 1) {
+            return getY();
+        } else if(i == 2) {
+            return getZ();
+        }
+        return 0;
+    }
+
     public void print() {
         System.out.println("[" + x + "," + y + "," + z + "]");
     }
