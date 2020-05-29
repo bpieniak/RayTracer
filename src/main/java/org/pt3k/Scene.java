@@ -1,10 +1,7 @@
 package org.pt3k;
 
 import org.pt3k.materials.*;
-import org.pt3k.shapes.XYrectangle;
-import org.pt3k.shapes.Sphere;
-import org.pt3k.shapes.XZrectangle;
-import org.pt3k.shapes.hittable;
+import org.pt3k.shapes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +10,7 @@ public class Scene implements hittable {
 
     public List<hittable> list;
 
-    Scene(List<hittable> list) {
+    public Scene(List<hittable> list) {
         this.list = list;
     }
 
@@ -45,13 +42,13 @@ public class Scene implements hittable {
                 new SolidColor(0.9f,0.9f,0.9f)
         );
 
-        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(2,2,2));
+        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(8,8,8));
 
-        //worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
+        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
 
         int i = 1;
-        for(int a = -6; a < 6; a = a+2) {
-            for(int b = -6; b < 6; b = b+2) {
+        for(int a = -8; a < 8; a = a+2) {
+            for(int b = -8; b < 8; b = b+2) {
                 float choose_mat = (float) Math.random();
                 Vec3 center = new Vec3((float )(a + 2*Math.random()), 0.2f, (float )(b + 2*Math.random()));
 
@@ -67,13 +64,33 @@ public class Scene implements hittable {
             }
         }
 
-        worldList.add(new Sphere(new Vec3(0,1,0),1,new Dielectric(1.5f)));
-        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Lambertian(new SolidColor(0.4f,0.2f,0.1f))));
+        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Dielectric(1.5f)));
         worldList.add(new Sphere(new Vec3(4,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
 
-        worldList.add(new XYrectangle(-5,0,0,4,2,diffuseLight));
-        Checker blackWhileChecker = new Checker(new SolidColor(0,0,0), new SolidColor(1,1,1));
-        worldList.add(new XZrectangle(-10,10,-10,10,0,new Lambertian(blackWhileChecker)));
+        worldList.add(new XZrectangle(-0.5f,0.5f,-0.5f,0.5f,0,diffuseLight));
+        worldList.add(new XZrectangle(-0.5f,0.5f,-0.5f,0.5f,1,diffuseLight));
+        worldList.add(new XYrectangle(-0.5f,0.5f,0f,1f,-0.5f,diffuseLight));
+        worldList.add(new XYrectangle(-0.5f,0.5f,0f,1f,0.5f,diffuseLight));
+        worldList.add(new YZrectangle(-0.5f,0.5f,0f,1f,-0.5f,diffuseLight));
+        worldList.add(new YZrectangle(-0.5f,0.5f,0f,1f,0.5f,diffuseLight));
+
+        return worldList;
+    }
+
+    public static ArrayList<hittable> cornellBox() {
+        ArrayList<hittable> worldList = new ArrayList<>();
+
+        Material red = new Lambertian(new SolidColor(0.8f,0.1f,0.1f));
+        Material green = new Lambertian(new SolidColor(0.1f,0.8f,0.1f));
+        Material white = new Lambertian(new SolidColor(0.8f,0.8f,0.8f));
+        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(7,7,7));
+
+        worldList.add(new YZrectangle(0,555,0,555,555,green));
+        worldList.add(new YZrectangle(0,555,0,555,0,red));
+        worldList.add(new XZrectangle(0,555,0,555,555,white));
+        worldList.add(new XZrectangle(0,555,0,555,0,white));
+        worldList.add(new XYrectangle(0,555,0,555,555,white));
+        worldList.add(new XZrectangle(113,443,127,432,554,diffuseLight));
 
         return worldList;
     }

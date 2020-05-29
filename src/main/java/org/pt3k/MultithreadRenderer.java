@@ -15,14 +15,20 @@ public class MultithreadRenderer {
     public int maxDepth;
     public byte[] pixels;
     hit_record rec;
+    Camera cam;
+    Vec3 background;
+    ArrayList<hittable> scene;
     Random generator;
 
-    public MultithreadRenderer(int width, int height, int numberOfSamples, int maxDepth) {
+    public MultithreadRenderer(int width, int height, int numberOfSamples, int maxDepth, Camera c, Vec3 bg, ArrayList<hittable> s) {
         this.width = width;
         this.height = height;
         this.numberOfSamples = numberOfSamples;
         this.maxDepth = maxDepth;
 
+        cam = c;
+        background = bg;
+        scene = s;
         pixels = new byte[width*height*3];
         generator = new Random();
         rec = new hit_record();
@@ -34,10 +40,8 @@ public class MultithreadRenderer {
         //System.out.println(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
-        ArrayList<hittable> randomScene = Scene.randomScene();
-
         for(int thread = 0; thread < threadCount; thread++) {
-            new Thread(new Worker(width,height,pixels,threadCount,thread,latch,numberOfSamples,maxDepth, randomScene)).start();
+            new Thread(new Worker(width,height,pixels,threadCount,thread,latch,numberOfSamples,maxDepth,cam,scene,background)).start();
         }
 
         latch.await();

@@ -1,8 +1,10 @@
 package org.pt3k.GUI;
 
-import com.sun.javafx.logging.PlatformLogger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -13,13 +15,18 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import org.pt3k.Camera;
 import org.pt3k.MultithreadRenderer;
+import org.pt3k.Scene;
+import org.pt3k.Vec3;
+import org.pt3k.shapes.hittable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class AppController {
 
@@ -32,13 +39,26 @@ public class AppController {
     @FXML VBox mainVBox;
     @FXML HBox HBox;
     @FXML Label statusLabel;
+    @FXML TextField FOV;
+    @FXML TextField lookFromX;
+    @FXML TextField lookFromY;
+    @FXML TextField lookFromZ;
+    @FXML TextField lookAtX;
+    @FXML TextField lookAtY;
+    @FXML TextField lookAtZ;
+    @FXML TextField tfBackgroundR;
+    @FXML TextField tfBackgroundG;
+    @FXML TextField tfBackgroundB;
+    @FXML ChoiceBox<String> cbSceneSelector;
 
     int width, height;
     WritableImage image;
+    String currScene;
+    ArrayList<hittable> currSceneList;
 
-    public AppController() {
+    String[] scenes = new String[]{"Random spheres", "Cornell Box"};
 
-    }
+    public AppController() { }
 
     @FXML
     private void initialize() {
@@ -46,6 +66,28 @@ public class AppController {
         makeTextFieldNumeraticOnly(resolutionY);
         makeTextFieldNumeraticOnly(samples);
         makeTextFieldNumeraticOnly(depth);
+        makeTextFieldNumeraticOnly(FOV);
+        makeTextFieldNumeraticOnly(lookFromX);
+        makeTextFieldNumeraticOnly(lookFromY);
+        makeTextFieldNumeraticOnly(lookFromZ);
+        makeTextFieldNumeraticOnly(lookAtX);
+        makeTextFieldNumeraticOnly(lookAtY);
+        makeTextFieldNumeraticOnly(lookAtZ);
+        makeTextFieldNumeraticOnly(tfBackgroundR);
+        makeTextFieldNumeraticOnly(tfBackgroundG);
+        makeTextFieldNumeraticOnly(tfBackgroundB);
+
+        cbSceneSelector.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                adjustCamera(t1);
+            }
+        });
+
+        for(String s : scenes) {
+            cbSceneSelector.getItems().add(s);
+        }
+        cbSceneSelector.setValue(scenes[0]);
     }
 
     @FXML
@@ -55,18 +97,42 @@ public class AppController {
         height = 200;
         int nSamples = 10;
         int nDepth = 10;
+        int FOVvalue = 20;
+        int lookFromXvalue = 13, lookFromYvalue = 2, lookFromZvalue = 3;
+        int lookAtXvalue = 0, lookAtYvalue = 0, lookAtZvalue = 0;
+        float backgroundR = 0, backgroundG = 0, backgroundB = 0;
 
         try {
             width = Integer.parseInt(resolutionX.getText().trim());
             height = Integer.parseInt(resolutionY.getText().trim());
             nSamples = Integer.parseInt(samples.getText().trim());
             nDepth = Integer.parseInt(depth.getText().trim());
+            FOVvalue = Integer.parseInt(FOV.getText().trim());
+            lookFromXvalue = Integer.parseInt(lookFromX.getText().trim());
+            lookFromYvalue = Integer.parseInt(lookFromY.getText().trim());
+            lookFromZvalue = Integer.parseInt(lookFromZ.getText().trim());
+            lookAtXvalue = Integer.parseInt(lookAtX.getText().trim());
+            lookAtYvalue = Integer.parseInt(lookAtY.getText().trim());
+            lookAtZvalue = Integer.parseInt(lookAtZ.getText().trim());
+            backgroundR = Float.parseFloat(tfBackgroundR.getText().trim());
+            backgroundG = Float.parseFloat(tfBackgroundG.getText().trim());
+            backgroundB = Float.parseFloat(tfBackgroundB.getText().trim());
         } catch (NumberFormatException nfe) {
             System.out.println(nfe.getMessage());
         }
 
+        Camera cam = new Camera(FOVvalue,(float) width/height,
+                new Vec3(lookFromXvalue,lookFromYvalue,lookFromZvalue),
+                new Vec3(lookAtXvalue,lookAtYvalue,lookAtZvalue),
+                new Vec3(0,1,0));
+
+        Vec3 backgroundColor = new Vec3(backgroundR, backgroundG, backgroundB);
+
+        ArrayList<hittable> scene = getScene();
+
+
         long start = System.currentTimeMillis();
-        byte[] pixels = (new MultithreadRenderer(width,height,nSamples,nDepth)).render();
+        byte[] pixels = (new MultithreadRenderer(width,height,nSamples,nDepth,cam,backgroundColor,scene)).render();
         long finish = System.currentTimeMillis();
 
         image = new WritableImage(width,height);
@@ -88,12 +154,10 @@ public class AppController {
 
         });
 
-        if((HBox.getWidth()-145) > HBox.getHeight()*(width/height)) {
+        if((HBox.getWidth()-200) > HBox.getHeight()*(width/height)) {
             imageView.setFitHeight(HBox.getHeight());
-            System.out.println(HBox.getHeight());
         } else {
-            System.out.println(HBox.getWidth());
-            imageView.setFitWidth(HBox.getWidth()-145);
+            imageView.setFitWidth(HBox.getWidth()-200);
         }
 
         statusLabel.setText("Wygenerowano w " + (finish-start)/1000.0 + " sekund");
@@ -114,10 +178,51 @@ public class AppController {
 
     public void makeTextFieldNumeraticOnly(TextField textField) {
         textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(!newValue.matches("\\d*")) {
-                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            if(!(newValue.matches("\\.?-?\\d*"))) {
+                textField.setText(newValue.replaceAll("[^\\.\\-\\d]", ""));
             }
         });
+    }
+
+    public ArrayList<hittable> getScene() {
+
+        String selected = cbSceneSelector.getValue();
+
+        if(selected.equals(currScene))
+            return currSceneList;
+
+        if(selected.equals(scenes[0])) {
+            currSceneList = Scene.randomScene();
+            currScene = scenes[0];
+        }
+        else {
+            currSceneList = Scene.cornellBox();
+            currScene = scenes[1];
+        }
+
+        return currSceneList;
+    }
+
+    void adjustCamera(String value) {
+
+        if(value.equals(scenes[0])) {
+            FOV.setText("20");
+            lookFromX.setText("13");
+            lookFromY.setText("6");
+            lookFromZ.setText("6");
+            lookAtX.setText("0");
+            lookAtY.setText("0");
+            lookAtZ.setText("0");
+        } else if(value.equals(scenes[1])) {
+            FOV.setText("40");
+            lookFromX.setText("278");
+            lookFromY.setText("278");
+            lookFromZ.setText("-800");
+            lookAtX.setText("278");
+            lookAtY.setText("278");
+            lookAtZ.setText("0");
+        }
+
     }
 
 }

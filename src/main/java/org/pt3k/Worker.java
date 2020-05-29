@@ -18,17 +18,21 @@ public class Worker implements Runnable {
 
     hit_record rec;
     ArrayList<hittable> sceneArray;
+    Vec3 backgroundColor;
+    Camera cam;
 
     Random generator;
 
-    Worker(int width, int height, final byte[] image, int threadCount, int threadID, CountDownLatch cdl, int s, int d, ArrayList<hittable> rs) {
+    Worker(int width, int height, final byte[] image, int threadCount, int threadID, CountDownLatch cdl, int s, int d, Camera c,ArrayList<hittable> rs, Vec3 bg) {
         this.width = width;
         this.height = height;
         this.image = image;
         countDownLatch = cdl;
         numberOfSamples = s;
         maxDepth = d;
+        cam = c;
         sceneArray = rs;
+        backgroundColor = bg;
 
         int perThread = height/threadCount;
         start = threadID*perThread;
@@ -40,18 +44,19 @@ public class Worker implements Runnable {
         generator = new Random();
     }
 
+
     @Override
     public void run() {
         //System.out.println(Thread.currentThread() + " " + start + " " + end);
-
+        /*
         Camera cam = new Camera(20,(float) width/height,
                 new Vec3(13,2,3),
                 new Vec3(0,0,0),
-                new Vec3(0,1,0));
+                new Vec3(0,1,0));*/
 
         Scene scene = new Scene(sceneArray);
 
-        Vec3 backgroud = new Vec3(0.2f,0.2f,0.2f);
+        Vec3 background = backgroundColor;
 
         for(int x = start; x < end; x++) {
             for(int y = 0; y < width; y++) {
@@ -62,7 +67,7 @@ public class Worker implements Runnable {
                     float v = ((x + MyRandom.randomFloatInRange(-1,1))/(float)height);
 
                     Ray r = cam.getRay(u,v);
-                    color = color.add(ray_color(r,backgroud,scene,maxDepth));
+                    color = color.add(ray_color(r,background,scene,maxDepth));
                 }
                 color.scale(numberOfSamples);
 
@@ -74,6 +79,7 @@ public class Worker implements Runnable {
 
         countDownLatch.countDown();
     }
+
 
     public Vec3 ray_color(final Ray r, Vec3 background,Scene world, int depth) {
 

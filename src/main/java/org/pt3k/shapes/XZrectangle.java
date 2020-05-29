@@ -27,7 +27,7 @@ public class XZrectangle implements hittable{
             return false;
 
         float x = r.origin.getX() + t*r.getDirection().getX();
-        float z = r.origin.getY() + t*r.getDirection().getY();
+        float z = r.origin.getZ() + t*r.getDirection().getZ();
 
         if(x < x0 || x > x1 || z < z0 || z > z1)
             return false;

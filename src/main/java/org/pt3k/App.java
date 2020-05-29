@@ -24,7 +24,7 @@ public class App extends Application {
         URL url = Paths.get("src/main/java/org/pt3k/GUI/Interface.fxml").toUri().toURL();
         Parent root = FXMLLoader.load(url);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1200, 800);
 
         stage.setTitle("Ray Tracer");
         stage.setScene(scene);
