@@ -3,6 +3,7 @@ package org.pt3k;
 import org.pt3k.materials.*;
 import org.pt3k.shapes.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class Scene implements hittable {
                  hitRecord.front_face = rec.front_face;
                  hitRecord.p = rec.p;
                  hitRecord.material = rec.material;
+                 hitRecord.u = rec.u;
+                 hitRecord.v = rec.v;
              }
          }
          return hit_anything;
@@ -42,7 +45,7 @@ public class Scene implements hittable {
                 new SolidColor(0.9f,0.9f,0.9f)
         );
 
-        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(8,8,8));
+        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(10,10,10));
 
         worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
 
@@ -91,6 +94,20 @@ public class Scene implements hittable {
         worldList.add(new XZrectangle(0,555,0,555,0,white));
         worldList.add(new XYrectangle(0,555,0,555,555,white));
         worldList.add(new XZrectangle(113,443,127,432,554,diffuseLight));
+
+        return worldList;
+    }
+
+    public static ArrayList<hittable> earthScene() throws IOException {
+        ArrayList<hittable> worldList = new ArrayList<>();
+
+        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(80,80,80));
+
+        Texture earthTexture = new ImageTexture("earth.jpg");
+        Material earthSurface = new Lambertian(earthTexture);
+
+        worldList.add(new Sphere(new Vec3(0,0,0),4,earthSurface));
+        worldList.add(new Sphere(new Vec3(30,1,0),2,diffuseLight));
 
         return worldList;
     }

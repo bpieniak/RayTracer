@@ -36,6 +36,7 @@ public class Sphere implements hittable{
                 Vec3 outward_normal = (r.at(temp).sub(center)).div(radius);
                 hitRecord.set_front_face(r,outward_normal);
                 hitRecord.material = material;
+                getSphereUV((hitRecord.p.sub(center)).div(radius),hitRecord);
                 return true;
             }
             temp = (-b+root)/(2.0f*a);
@@ -45,6 +46,7 @@ public class Sphere implements hittable{
                 Vec3 outward_normal = (r.at(temp).sub(center)).div(radius);
                 hitRecord.set_front_face(r,outward_normal);
                 hitRecord.material = material;
+                getSphereUV((hitRecord.p.sub(center)).div(radius),hitRecord);
                 return true;
             }
         }
@@ -52,11 +54,11 @@ public class Sphere implements hittable{
         return false;
     }
 
-    void getSphereUV(Vec3 p, float u, float v) {
+    void getSphereUV(Vec3 p, hit_record hitRecord) {
 
         double phi = Math.atan2(p.getZ(),p.getX());
         double theta = Math.asin(p.getY());
-        u = (float) (1-(phi+Math.PI)/(2*Math.PI));
-        v = (float) ((theta + Math.PI/2)/Math.PI);
+        hitRecord.u = (float) (1-(phi+Math.PI)/(2*Math.PI));
+        hitRecord.v = (float) ((theta + Math.PI/2)/Math.PI);
     }
 }

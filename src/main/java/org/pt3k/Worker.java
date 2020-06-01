@@ -83,6 +83,8 @@ public class Worker implements Runnable {
 
     public Vec3 ray_color(final Ray r, Vec3 background,Scene world, int depth) {
 
+        Wrapper wrapper = new Wrapper();
+
         if(depth <= 0) {
             return new Vec3(0,0,0);
         }
@@ -90,8 +92,6 @@ public class Worker implements Runnable {
         if(!world.hit(r,0.01f,Float.MAX_VALUE,rec)) {
             return background;
         }
-        Wrapper wrapper = new Wrapper();
-
 
         Vec3 emitted = rec.material.emitted(rec.u,rec.v,rec.p);
 

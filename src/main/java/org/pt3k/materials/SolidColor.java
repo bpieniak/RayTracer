@@ -15,7 +15,7 @@ public class SolidColor implements Texture {
     }
 
     @Override
-    public Vec3 value(float u, double v, Vec3 p) {
+    public Vec3 value(float u, float v, Vec3 p) {
         return color;
     }
 }

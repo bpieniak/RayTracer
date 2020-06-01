@@ -4,5 +4,5 @@ import org.pt3k.Vec3;
 
 public interface Texture {
 
-    Vec3 value(float u, double v, Vec3 p);
+    Vec3 value(float u, float v, Vec3 p);
 }

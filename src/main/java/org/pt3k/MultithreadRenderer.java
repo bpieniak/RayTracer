@@ -37,7 +37,6 @@ public class MultithreadRenderer {
     public byte[] render() throws InterruptedException {
 
         int threadCount = Runtime.getRuntime().availableProcessors();
-        //System.out.println(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         for(int thread = 0; thread < threadCount; thread++) {

@@ -19,6 +19,7 @@ import org.pt3k.Camera;
 import org.pt3k.MultithreadRenderer;
 import org.pt3k.Scene;
 import org.pt3k.Vec3;
+import org.pt3k.materials.ImageTexture;
 import org.pt3k.shapes.hittable;
 
 import javax.imageio.ImageIO;
@@ -56,7 +57,7 @@ public class AppController {
     String currScene;
     ArrayList<hittable> currSceneList;
 
-    String[] scenes = new String[]{"Random spheres", "Cornell Box"};
+    String[] scenes = new String[]{"Random spheres", "Cornell Box", "Earth"};
 
     public AppController() { }
 
@@ -91,7 +92,7 @@ public class AppController {
     }
 
     @FXML
-    private void generateImage() throws InterruptedException {
+    private void generateImage() throws InterruptedException, IOException {
 
         width = 200;
         height = 200;
@@ -101,6 +102,8 @@ public class AppController {
         int lookFromXvalue = 13, lookFromYvalue = 2, lookFromZvalue = 3;
         int lookAtXvalue = 0, lookAtYvalue = 0, lookAtZvalue = 0;
         float backgroundR = 0, backgroundG = 0, backgroundB = 0;
+
+        ImageTexture it = new ImageTexture("earth.jpg");
 
         try {
             width = Integer.parseInt(resolutionX.getText().trim());
@@ -160,7 +163,7 @@ public class AppController {
             imageView.setFitWidth(HBox.getWidth()-200);
         }
 
-        statusLabel.setText("Wygenerowano w " + (finish-start)/1000.0 + " sekund");
+        statusLabel.setText("Rendered in " + (finish-start)/1000.0 + " secends");
     }
 
     @FXML
@@ -184,7 +187,7 @@ public class AppController {
         });
     }
 
-    public ArrayList<hittable> getScene() {
+    public ArrayList<hittable> getScene() throws IOException {
 
         String selected = cbSceneSelector.getValue();
 
@@ -195,9 +198,12 @@ public class AppController {
             currSceneList = Scene.randomScene();
             currScene = scenes[0];
         }
-        else {
+        else if (selected.equals(scenes[1])){
             currSceneList = Scene.cornellBox();
             currScene = scenes[1];
+        } else {
+            currSceneList = Scene.earthScene();
+            currScene = scenes[2];
         }
 
         return currSceneList;
@@ -221,6 +227,17 @@ public class AppController {
             lookAtX.setText("278");
             lookAtY.setText("278");
             lookAtZ.setText("0");
+        } else if(value.equals(scenes[2])) {
+            FOV.setText("20");
+            lookFromX.setText("30");
+            lookFromY.setText("15");
+            lookFromZ.setText("6");
+            lookAtX.setText("0");
+            lookAtY.setText("0");
+            lookAtZ.setText("0");
+            tfBackgroundR.setText("0.2");
+            tfBackgroundG.setText("0.2");
+            tfBackgroundB.setText("0.6");
         }
 
     }
