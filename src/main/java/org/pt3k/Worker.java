@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Klasa uruchamiana na watku renderujaca obraz.
+ */
 public class Worker implements Runnable {
 
     int width, height;
@@ -23,6 +26,20 @@ public class Worker implements Runnable {
 
     Random generator;
 
+    /**
+     * Konstruktor klasy Worker.
+     * @param width szerokosc obliczanego obrazu
+     * @param height wysokosc obliczanego obrazu
+     * @param image tablicy byteow do ktorej zostana zapisane obliczone wartosci obrazu
+     * @param threadCount liczba watkow ktore renderuja obraz
+     * @param threadID ID tego watku
+     * @param cdl Count down latch
+     * @param s Liczba probek na kazdy pixel
+     * @param d Maksymalna liczba odbic promienia
+     * @param c Kamera
+     * @param rs ArrayList wszystkich obiektow w scenie
+     * @param bg Kolor tla.
+     */
     Worker(int width, int height, final byte[] image, int threadCount, int threadID, CountDownLatch cdl, int s, int d, Camera c,ArrayList<hittable> rs, Vec3 bg) {
         this.width = width;
         this.height = height;
@@ -45,14 +62,12 @@ public class Worker implements Runnable {
     }
 
 
+    /**
+     * Metoda klasy Runnable ktora tworzy promienie z kamery do sceny, oblicza kolor kazdego pixela
+     * i zapisuje go do zadanej tablicy.
+     */
     @Override
     public void run() {
-        //System.out.println(Thread.currentThread() + " " + start + " " + end);
-        /*
-        Camera cam = new Camera(20,(float) width/height,
-                new Vec3(13,2,3),
-                new Vec3(0,0,0),
-                new Vec3(0,1,0));*/
 
         Scene scene = new Scene(sceneArray);
 
@@ -81,6 +96,14 @@ public class Worker implements Runnable {
     }
 
 
+    /**
+     * Metoda obliczajaca kolor danego promienia na podstawie trafionych obiektow.
+     * @param r promiec
+     * @param background kolor tla
+     * @param world scena
+     * @param depth glebokosc promienia
+     * @return obliczony kolor promienia
+     */
     public Vec3 ray_color(final Ray r, Vec3 background,Scene world, int depth) {
 
         Wrapper wrapper = new Wrapper();

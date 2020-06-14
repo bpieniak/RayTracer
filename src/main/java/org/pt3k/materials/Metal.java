@@ -5,6 +5,9 @@ import org.pt3k.Vec3;
 import org.pt3k.Wrapper;
 import org.pt3k.hit_record;
 
+/**
+ * Material reprezentujacy powierzchnie metalowa.
+ */
 public class Metal implements Material{
 
     public Vec3 albedo;

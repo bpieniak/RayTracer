@@ -3,16 +3,11 @@ package org.pt3k.materials;
 import org.pt3k.Vec3;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.Arrays;
 
 public class ImageTexture implements Texture {
 
@@ -25,6 +20,10 @@ public class ImageTexture implements Texture {
 
     ImageTexture() { }
 
+    /**
+     * Odczytuje dane z tekstury i zapisuje w tablicy data.
+     * @param filepath sciezka do obrazu tekstury
+     */
     public ImageTexture(String filepath) throws IOException {
 
         File img = new File(filepath);
@@ -33,8 +32,6 @@ public class ImageTexture implements Texture {
         DataBufferByte d = (DataBufferByte) r.getDataBuffer();
 
         byte[] byteData = d.getData();
-
-
 
         width = image.getWidth();
         height = image.getHeight();

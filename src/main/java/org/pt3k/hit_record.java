@@ -2,6 +2,9 @@ package org.pt3k;
 
 import org.pt3k.materials.Material;
 
+/**
+ * Klasa zawierajaca dane o trafieniu obiektu przez promien.
+ */
 public class hit_record {
     public Vec3 p;
     public Vec3 normal;

@@ -80,13 +80,21 @@ public class Scene implements hittable {
         return worldList;
     }
 
-    public static ArrayList<hittable> cornellBox() {
+    public static ArrayList<hittable> cornellBox() throws IOException {
         ArrayList<hittable> worldList = new ArrayList<>();
 
         Material red = new Lambertian(new SolidColor(0.8f,0.1f,0.1f));
         Material green = new Lambertian(new SolidColor(0.1f,0.8f,0.1f));
         Material white = new Lambertian(new SolidColor(0.8f,0.8f,0.8f));
         DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(7,7,7));
+
+        Texture earthTexture = new ImageTexture("earth.jpg");
+        Material earthSurface = new Lambertian(earthTexture);
+
+        worldList.add(new Sphere(new Vec3(138,100,300),100,new Dielectric(1.5f)));
+        worldList.add(new Sphere(new Vec3(138,100,300),-90,new Dielectric(1.5f)));
+        worldList.add(new Sphere(new Vec3(138*2,240,350),100,new Metal(new Vec3(0.7f,0.6f,0.5f))));
+        worldList.add(new Sphere(new Vec3(138*3,390,400),100, earthSurface));
 
         worldList.add(new YZrectangle(0,555,0,555,555,green));
         worldList.add(new YZrectangle(0,555,0,555,0,red));

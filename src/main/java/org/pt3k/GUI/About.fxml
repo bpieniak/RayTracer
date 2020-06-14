@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="mainVBox" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+               <items>
+                        <MenuItem mnemonicParsing="false" text="Exit" />
+               </items></Menu>
+            </menus>
+        </MenuBar>
+        <HBox fx:id="HBox" prefHeight="845.0" prefWidth="1000.0">
+         <children>
+            <VBox prefHeight="324.0" prefWidth="1000.0">
+               <children>
+                  <Label prefHeight="28.0" prefWidth="102.0" text="Ray Tracer">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="109.0" prefWidth="450.0" text="    Program wielowątkowy generujący obrazy przez wysyłanie wielu promieni z kamery przez ekran w kierunku sceny, promienie te po trafieniu w obiekt ulegają odbiciu i na podstawie odbić obliczany jest kolor danego pixela na ekranie. Pozwala to symulować fizyczne zachowanie się światła i generowanie realistycznych obrazów." wrapText="true">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="38.0" text="Obsługiwane funkcje:" wrapText="true">
+                     <VBox.margin>
+                        <Insets left="10.0" top="8.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Calibri Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="106.0" text="- 4 możliwe do wyboru sceny" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="120.0" text="- Zmienna rozdzielczość" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="134.0" text="- Zmienna ilość próbek na pixel i maksymalna głębokość odbicie" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="148.0" text="- Zmiana ustawień kamery" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="162.0" text="- Zmiana ustawień sceny" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="176.0" text="Obsługiwane materiały:" wrapText="true">
+                     <font>
+                        <Font name="Calibri Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="8.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="190.0" text="- Matowy" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="204.0" text="- Metal" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="218.0" text="- Szkło" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="232.0" text="- Światło punktowe" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="246.0" text="- Tekstura z obrazu" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="260.0" text="- Szachownica 2 kolorowa." wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="274.0" text="Obsługiwane figury:" wrapText="true">
+                     <font>
+                        <Font name="Calibri Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="8.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="288.0" text="- Sfera" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="302.0" text="- Prostokąt" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="316.0" prefHeight="24.0" prefWidth="441.0" text="Użyte technologie: Java, JavaFX, JavaDoc, Scene Builder IntelliJ IDEA" wrapText="true">
+                     <font>
+                        <Font name="Calibri" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="8.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children></HBox>
+        <Pane prefHeight="251.0" prefWidth="1000.0" />
+        <Separator prefWidth="200.0" />
+        <HBox>
+            <children>
+                <Label fx:id="statusLabel1" alignment="CENTER_RIGHT" contentDisplay="RIGHT" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="statusLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Autor: Bartosz Pieniak">
+                    <HBox.margin>
+                        <Insets bottom="3.0" left="5.0" right="5.0" top="3.0" />
+                    </HBox.margin>
+                </Label>
+            </children>
+        </HBox>
+    </children>
+</VBox>

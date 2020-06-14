@@ -5,13 +5,15 @@ import org.pt3k.Vec3;
 import org.pt3k.hit_record;
 import org.pt3k.materials.Material;
 
+/**
+ * Klasa reprezentujaca sfere.
+ */
 public class Sphere implements hittable{
 
     public Vec3 center;
     public float radius;
     public Material material;
 
-    public Sphere() {}
     public Sphere(Vec3 cen, float radius, Material material) {
         this.center = cen;
         this.radius = radius;
@@ -21,7 +23,7 @@ public class Sphere implements hittable{
     @Override
     public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
 
-        Vec3 oc = r.origin.sub(center);
+        Vec3 oc = r.getOrigin().sub(center);
         float a = r.getDirection().dot(r.getDirection());
         float b = 2.0f * oc.dot(r.getDirection());
         float c = oc.dot(oc) - radius*radius;

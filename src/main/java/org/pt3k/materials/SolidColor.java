@@ -2,6 +2,9 @@ package org.pt3k.materials;
 
 import org.pt3k.Vec3;
 
+/**
+ * Textura skladajaca sie z jednego koloru.
+ */
 public class SolidColor implements Texture {
 
     Vec3 color;

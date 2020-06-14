@@ -26,7 +26,6 @@ public class App extends Application {
 
         Scene scene = new Scene(root, 1200, 800);
 
-
         stage.setTitle("Ray Tracer");
         stage.setScene(scene);
         stage.show();

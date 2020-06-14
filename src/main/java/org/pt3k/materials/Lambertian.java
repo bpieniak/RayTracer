@@ -2,6 +2,9 @@ package org.pt3k.materials;
 
 import org.pt3k.*;
 
+/**
+ * Matowy material ulegajacy odbiciu Lambertowskiemu
+ */
 public class Lambertian implements Material {
 
     Texture albedo;

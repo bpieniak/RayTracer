@@ -15,6 +15,7 @@
             <Menu mnemonicParsing="false" text="File">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#saveImage" text="Save to png" />
+                  <MenuItem mnemonicParsing="false" onAction="#exitApp" text="Exit" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Edit">
@@ -24,7 +25,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#changeScene" text="About" />
                </items>
             </Menu>
          </menus>
@@ -33,7 +34,7 @@
          <children>
             <VBox minWidth="190.0" prefHeight="2000.0" prefWidth="192.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#generateImage" prefHeight="25.0" prefWidth="281.0" text="GENERATE" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#generateImage" prefHeight="25.0" prefWidth="281.0" text="RENDER" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </VBox.margin>

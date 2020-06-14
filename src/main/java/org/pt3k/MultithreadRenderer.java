@@ -3,10 +3,12 @@ package org.pt3k;
 import org.pt3k.shapes.hittable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Klasa powolujaca watki renderujace obraz.
+ */
 public class MultithreadRenderer {
 
     public int width;
@@ -42,7 +44,6 @@ public class MultithreadRenderer {
         for(int thread = 0; thread < threadCount; thread++) {
             new Thread(new Worker(width,height,pixels,threadCount,thread,latch,numberOfSamples,maxDepth,cam,scene,background)).start();
         }
-
         latch.await();
 
         //flip
@@ -52,8 +53,6 @@ public class MultithreadRenderer {
             image[i+1] = pixels[pixels.length-i-2];
             image[i+2] = pixels[pixels.length-i-1];
         }
-
-        //System.out.println(Arrays.toString(pixels));
 
         return image;
     }

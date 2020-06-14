@@ -5,6 +5,9 @@ import org.pt3k.Vec3;
 import org.pt3k.hit_record;
 import org.pt3k.materials.Material;
 
+/**
+ * Prostokat lezacy w osi XY.
+ */
 public class XYrectangle implements hittable{
 
     float x0, x1, y0, y1, k;
@@ -26,8 +29,8 @@ public class XYrectangle implements hittable{
         if(t < t_min || t > t_max)
             return false;
 
-        float x = r.origin.getX() + t*r.getDirection().getX();
-        float y = r.origin.getY() + t*r.getDirection().getY();
+        float x = r.getOrigin().getX() + t*r.getDirection().getX();
+        float y = r.getOrigin().getY() + t*r.getDirection().getY();
 
         if(x < x0 || x > x1 || y < y0 || y > y1)
             return false;

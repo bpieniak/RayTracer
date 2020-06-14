@@ -7,11 +7,12 @@ import org.pt3k.hit_record;
 
 import java.util.Random;
 
+/**
+ * Material dielektryk. Po trafieniu promienia w ten material promien ulega jednoczesnie odbiciu i zalamaniu.
+ */
 public class Dielectric implements Material {
 
-    private static Random generator = new Random();
     float refIdx;
-
     public Dielectric(float ri) {
         refIdx = ri;
     }
@@ -23,11 +24,10 @@ public class Dielectric implements Material {
         if (rec.front_face) {
             etaiOverEtat = (1.0f/refIdx);
         } else {
-
             etaiOverEtat = refIdx;
         }
 
-        Vec3 unitDirection = r_in.direction.unit_vector();
+        Vec3 unitDirection = r_in.getDirection().unit_vector();
         float cos_theta = Math.min(rec.normal.dot(unitDirection.inverse()),1.0f);
         float sin_theta = (float) Math.sqrt(1.0-cos_theta*cos_theta);
         if(etaiOverEtat*sin_theta > 1.0f) {

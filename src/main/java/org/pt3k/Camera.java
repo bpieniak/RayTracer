@@ -1,5 +1,8 @@
 package org.pt3k;
 
+/**
+ * Klasa reprezentujaca kamera z ktorej wysylane sa promienie.
+ */
 public class Camera {
     public Vec3 lower_left_corner;
     public Vec3 horizontal;

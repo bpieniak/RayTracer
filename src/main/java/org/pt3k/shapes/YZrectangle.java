@@ -5,6 +5,9 @@ import org.pt3k.Vec3;
 import org.pt3k.hit_record;
 import org.pt3k.materials.Material;
 
+/**
+ * Prostokat lezacy w osi YZ.
+ */
 public class YZrectangle implements hittable{
 
     float z0, z1, y0, y1, k;
@@ -26,8 +29,8 @@ public class YZrectangle implements hittable{
         if(t < t_min || t > t_max)
             return false;
 
-        float y = r.origin.getY() + t*r.getDirection().getY();
-        float z = r.origin.getZ() + t*r.getDirection().getZ();
+        float y = r.getOrigin().getY() + t*r.getDirection().getY();
+        float z = r.getOrigin().getZ() + t*r.getDirection().getZ();
 
         if(z < z0 || z > z1 || y < y0 || y > y1)
             return false;

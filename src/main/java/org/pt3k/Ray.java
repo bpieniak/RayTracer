@@ -1,9 +1,11 @@
 package org.pt3k;
 
-
+/**
+ * Klasa repezentujaca promiec z poczatku w pewnym kierunku.
+ */
 public class Ray {
-    public Vec3 origin;
-    public Vec3 direction;
+    Vec3 origin;
+    Vec3 direction;
 
     public Ray() {}
 

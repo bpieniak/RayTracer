@@ -4,6 +4,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,6 +18,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.pt3k.Camera;
 import org.pt3k.MultithreadRenderer;
 import org.pt3k.Scene;
@@ -23,14 +27,20 @@ import org.pt3k.materials.ImageTexture;
 import org.pt3k.shapes.hittable;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Klasa obslugujaca wszystkie operacje w GUI aplikacji.
+ */
 public class AppController {
 
+    Scene mainScene, aboutScene;
 
     @FXML TextField resolutionX;
     @FXML TextField resolutionY;
@@ -63,6 +73,7 @@ public class AppController {
 
     @FXML
     private void initialize() {
+
         makeTextFieldNumeraticOnly(resolutionX);
         makeTextFieldNumeraticOnly(resolutionY);
         makeTextFieldNumeraticOnly(samples);
@@ -78,12 +89,7 @@ public class AppController {
         makeTextFieldNumeraticOnly(tfBackgroundG);
         makeTextFieldNumeraticOnly(tfBackgroundB);
 
-        cbSceneSelector.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                adjustCamera(t1);
-            }
-        });
+        cbSceneSelector.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> adjustCamera(t1));
 
         for(String s : scenes) {
             cbSceneSelector.getItems().add(s);
@@ -102,8 +108,6 @@ public class AppController {
         int lookFromXvalue = 13, lookFromYvalue = 2, lookFromZvalue = 3;
         int lookAtXvalue = 0, lookAtYvalue = 0, lookAtZvalue = 0;
         float backgroundR = 0, backgroundG = 0, backgroundB = 0;
-
-        ImageTexture it = new ImageTexture("earth.jpg");
 
         try {
             width = Integer.parseInt(resolutionX.getText().trim());
@@ -167,7 +171,7 @@ public class AppController {
     }
 
     @FXML
-    public void saveImage() throws IOException {
+    private void saveImage() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.selectedExtensionFilterProperty();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG", "*.png"));
@@ -219,6 +223,9 @@ public class AppController {
             lookAtX.setText("0");
             lookAtY.setText("0");
             lookAtZ.setText("0");
+            tfBackgroundR.setText("0");
+            tfBackgroundG.setText("0");
+            tfBackgroundB.setText("0");
         } else if(value.equals(scenes[1])) {
             FOV.setText("40");
             lookFromX.setText("278");
@@ -227,6 +234,9 @@ public class AppController {
             lookAtX.setText("278");
             lookAtY.setText("278");
             lookAtZ.setText("0");
+            tfBackgroundR.setText("0");
+            tfBackgroundG.setText("0");
+            tfBackgroundB.setText("0");
         } else if(value.equals(scenes[2])) {
             FOV.setText("20");
             lookFromX.setText("30");
@@ -239,7 +249,24 @@ public class AppController {
             tfBackgroundG.setText("0.2");
             tfBackgroundB.setText("0.6");
         }
-
     }
 
+    @FXML
+    void changeScene() throws IOException {
+
+        Stage stage = new Stage();
+
+        URL url = Paths.get("src/main/java/org/pt3k/GUI/About.fxml").toUri().toURL();
+        Parent root = FXMLLoader.load(url);
+
+        javafx.scene.Scene aboutScene = new javafx.scene.Scene(root);
+        stage.setScene(aboutScene);
+        stage.showAndWait();
+    }
+
+    @FXML
+    void exitApp() {
+        Stage stage = (Stage) mainVBox.getScene().getWindow();
+        stage.close();
+    }
 }
