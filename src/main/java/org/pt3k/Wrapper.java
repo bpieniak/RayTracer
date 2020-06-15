@@ -1,5 +1,8 @@
 package org.pt3k;
 
+/**
+ * Klasa pomocnicza.
+ */
 public class Wrapper{
     public Ray scattered;
     public Vec3 refracted;

@@ -14,6 +14,11 @@ public class Ray {
         this.direction = direction;
     }
 
+    /**
+     * Metoda obliczajaca punkt promienia w odleglosci t od poczatku.
+     * @param t odleglosc od poczatku
+     * @return punkt
+     */
     public Vec3 at(float t) {
         Vec3 tdir = direction.mul(t);
         return origin.add(tdir);

@@ -9,12 +9,20 @@ import java.util.List;
 
 public class Scene implements hittable {
 
-    public List<hittable> list;
+    List<hittable> list;
 
     public Scene(List<hittable> list) {
         this.list = list;
     }
 
+    /**
+     * Metoda sprawdzajaca czy promien uderzyl w obiekt w scenie
+     * @param r promien
+     * @param t_min minimalna odleglosc trafienia
+     * @param t_max maxymalna odleglosc trafienia
+     * @param hitRecord informacje o trafieniu
+     * @return czy promien trafil
+     */
     @Override
     public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
          hit_record rec = new hit_record();
@@ -37,6 +45,31 @@ public class Scene implements hittable {
          return hit_anything;
     }
 
+    public static ArrayList<hittable> fiveSpheres() throws IOException {
+        ArrayList<hittable> worldList = new ArrayList<>();
+
+        Checker checker = new Checker(
+                new SolidColor(0.2f,0.2f,0.2f),
+                new SolidColor(0.9f,0.9f,0.9f)
+        );
+
+        Texture earthTexture = new ImageTexture("earth.jpg");
+        Material earthSurface = new Lambertian(earthTexture);
+        Texture marsTexture = new ImageTexture("mars.jpg");
+        Material marsSurface = new Lambertian(marsTexture);
+        Texture neptuneTexture = new ImageTexture("neptune.jpg");
+        Material neptuneSurface = new Lambertian(neptuneTexture);
+
+        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
+        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Dielectric(1.5f)));
+        worldList.add(new Sphere(new Vec3(0,1,4),1,earthSurface));
+        worldList.add(new Sphere(new Vec3(4,1,0),1,marsSurface));
+        worldList.add(new Sphere(new Vec3(0,1,-4),1,neptuneSurface));
+        worldList.add(new Sphere(new Vec3(0,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
+
+        return worldList;
+    }
+
     public static ArrayList<hittable> randomScene() {
         ArrayList<hittable> worldList = new ArrayList<>();
 
@@ -50,8 +83,8 @@ public class Scene implements hittable {
         worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
 
         int i = 1;
-        for(int a = -8; a < 8; a = a+2) {
-            for(int b = -8; b < 8; b = b+2) {
+        for(int a = -6; a < 6; a = a+4) {
+            for(int b = -6; b < 6; b = b+4) {
                 float choose_mat = (float) Math.random();
                 Vec3 center = new Vec3((float )(a + 2*Math.random()), 0.2f, (float )(b + 2*Math.random()));
 

@@ -167,7 +167,7 @@
                         <Insets left="10.0" top="2.0" />
                      </VBox.margin>
                   </Label>
-                  <Label layoutX="10.0" layoutY="316.0" prefHeight="24.0" prefWidth="441.0" text="Użyte technologie: Java, JavaFX, JavaDoc, Scene Builder IntelliJ IDEA" wrapText="true">
+                  <Label layoutX="10.0" layoutY="316.0" prefHeight="24.0" prefWidth="471.0" text="Użyte technologie: Java, JavaFX, JavaDoc, Scene Builder, IntelliJ IDEA" wrapText="true">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>

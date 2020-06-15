@@ -67,7 +67,7 @@ public class AppController {
     String currScene;
     ArrayList<hittable> currSceneList;
 
-    String[] scenes = new String[]{"Random spheres", "Cornell Box", "Earth"};
+    String[] scenes = new String[]{"Random spheres", "Five spheres", "Cornell box", "Earth"};
 
     public AppController() { }
 
@@ -201,13 +201,16 @@ public class AppController {
         if(selected.equals(scenes[0])) {
             currSceneList = Scene.randomScene();
             currScene = scenes[0];
-        }
-        else if (selected.equals(scenes[1])){
-            currSceneList = Scene.cornellBox();
+        }else if (selected.equals(scenes[1])) {
+            currSceneList = Scene.fiveSpheres();
             currScene = scenes[1];
+        }
+        else if (selected.equals(scenes[2])){
+            currSceneList = Scene.cornellBox();
+            currScene = scenes[2];
         } else {
             currSceneList = Scene.earthScene();
-            currScene = scenes[2];
+            currScene = scenes[3];
         }
 
         return currSceneList;
@@ -226,7 +229,18 @@ public class AppController {
             tfBackgroundR.setText("0");
             tfBackgroundG.setText("0");
             tfBackgroundB.setText("0");
-        } else if(value.equals(scenes[1])) {
+        }else if(value.equals(scenes[1])) {
+            FOV.setText("20");
+            lookFromX.setText("13");
+            lookFromY.setText("10");
+            lookFromZ.setText("13");
+            lookAtX.setText("0");
+            lookAtY.setText("0");
+            lookAtZ.setText("0");
+            tfBackgroundR.setText("1");
+            tfBackgroundG.setText("1");
+            tfBackgroundB.setText("1");
+        }else if(value.equals(scenes[2])) {
             FOV.setText("40");
             lookFromX.setText("278");
             lookFromY.setText("278");
@@ -237,7 +251,7 @@ public class AppController {
             tfBackgroundR.setText("0");
             tfBackgroundG.setText("0");
             tfBackgroundB.setText("0");
-        } else if(value.equals(scenes[2])) {
+        } else if(value.equals(scenes[3])) {
             FOV.setText("20");
             lookFromX.setText("30");
             lookFromY.setText("15");

@@ -22,6 +22,14 @@ public class YZrectangle implements hittable{
         material = mat;
     }
 
+    /**
+     * Metoda sprawdzajaca czy promien trafil w prostokat lezacy w osi YZ w scenie
+     * @param r promien
+     * @param t_min minimalna odleglosc trafienia
+     * @param t_max maxymalna odleglosc trafienia
+     * @param hitRecord informacje o trafieniu
+     * @return czy promien trafil
+     */
     @Override
     public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
 
