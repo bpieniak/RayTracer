@@ -67,7 +67,7 @@ public class AppController {
     String currScene;
     ArrayList<hittable> currSceneList;
 
-    String[] scenes = new String[]{"Random spheres", "Five spheres", "Cornell box", "Earth"};
+    String[] scenes = new String[]{"Five spheres", "Random spheres", "Cornell box", "Earth"};
 
     public AppController() { }
 
@@ -199,10 +199,10 @@ public class AppController {
             return currSceneList;
 
         if(selected.equals(scenes[0])) {
-            currSceneList = Scene.randomScene();
+            currSceneList = Scene.fiveSpheres();
             currScene = scenes[0];
         }else if (selected.equals(scenes[1])) {
-            currSceneList = Scene.fiveSpheres();
+            currSceneList = Scene.randomScene();
             currScene = scenes[1];
         }
         else if (selected.equals(scenes[2])){
@@ -221,17 +221,6 @@ public class AppController {
         if(value.equals(scenes[0])) {
             FOV.setText("20");
             lookFromX.setText("13");
-            lookFromY.setText("6");
-            lookFromZ.setText("6");
-            lookAtX.setText("0");
-            lookAtY.setText("0");
-            lookAtZ.setText("0");
-            tfBackgroundR.setText("0");
-            tfBackgroundG.setText("0");
-            tfBackgroundB.setText("0");
-        }else if(value.equals(scenes[1])) {
-            FOV.setText("20");
-            lookFromX.setText("13");
             lookFromY.setText("10");
             lookFromZ.setText("13");
             lookAtX.setText("0");
@@ -240,6 +229,17 @@ public class AppController {
             tfBackgroundR.setText("1");
             tfBackgroundG.setText("1");
             tfBackgroundB.setText("1");
+        }else if(value.equals(scenes[1])) {
+            FOV.setText("20");
+            lookFromX.setText("13");
+            lookFromY.setText("6");
+            lookFromZ.setText("6");
+            lookAtX.setText("0");
+            lookAtY.setText("0");
+            lookAtZ.setText("0");
+            tfBackgroundR.setText("0");
+            tfBackgroundG.setText("0");
+            tfBackgroundB.setText("0");
         }else if(value.equals(scenes[2])) {
             FOV.setText("40");
             lookFromX.setText("278");
