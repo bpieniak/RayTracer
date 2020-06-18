@@ -54,9 +54,11 @@ public class Worker implements Runnable {
         int perThread = height/threadCount;
         start = threadID*perThread;
         end = (threadID + 1)*perThread;
+
         if(threadID == threadCount-1)
             end = height;
 
+        System.out.println(threadID + " " + start + " " + end);
         rec = new hit_record();
         generator = new Random();
     }
@@ -78,8 +80,8 @@ public class Worker implements Runnable {
                 Vec3 color = new Vec3(0,0,0);
 
                 for(int s =  0; s < numberOfSamples; ++s) {
-                    float u = ((y + MyRandom.randomFloatInRange(-1,1))/(float)width);
-                    float v = ((x + MyRandom.randomFloatInRange(-1,1))/(float)height);
+                    float u = ((y + MyRandom.randomFloatInRange(0,1))/(float)width);
+                    float v = ((x + MyRandom.randomFloatInRange(0,1))/(float)height);
 
                     Ray r = cam.getRay(u,v);
                     color = color.add(ray_color(r,background,scene,maxDepth));
