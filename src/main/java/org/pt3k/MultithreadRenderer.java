@@ -36,11 +36,6 @@ public class MultithreadRenderer {
         rec = new hit_record();
     }
 
-    /**
-     * Powołuje do życia nowe wątki generujące i zwraca pełny obraz
-     * @return wygenerowany obraz
-     * @throws InterruptedException
-     */
     public byte[] render() throws InterruptedException {
 
         int threadCount = Runtime.getRuntime().availableProcessors();

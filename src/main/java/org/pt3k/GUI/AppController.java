@@ -1,8 +1,11 @@
 package org.pt3k.GUI;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -20,9 +23,11 @@ import org.pt3k.Camera;
 import org.pt3k.MultithreadRenderer;
 import org.pt3k.Scene;
 import org.pt3k.Vec3;
+import org.pt3k.materials.ImageTexture;
 import org.pt3k.shapes.hittable;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +39,8 @@ import java.util.ArrayList;
  * Klasa obslugujaca wszystkie operacje w GUI aplikacji.
  */
 public class AppController {
+
+    Scene mainScene, aboutScene;
 
     @FXML TextField resolutionX;
     @FXML TextField resolutionY;
@@ -129,6 +136,7 @@ public class AppController {
         Vec3 backgroundColor = new Vec3(backgroundR, backgroundG, backgroundB);
 
         ArrayList<hittable> scene = getScene();
+
 
         long start = System.currentTimeMillis();
         byte[] pixels = (new MultithreadRenderer(width,height,nSamples,nDepth,cam,backgroundColor,scene)).render();

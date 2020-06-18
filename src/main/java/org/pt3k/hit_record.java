@@ -14,11 +14,7 @@ public class hit_record {
     public float v;
     public boolean front_face;
 
-    /**
-     * Sprawdza czy wektor normalny jest skierowany na zewnatrz.
-     * @param r promien
-     * @param outward_normal obecny wektor normalny
-     */
+
     public void set_front_face(Ray r, Vec3 outward_normal) {
         front_face = (r.getDirection().dot(outward_normal) < 0);
         if(front_face) {
