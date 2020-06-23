@@ -3,21 +3,21 @@ package org.pt3k.materials;
 import org.pt3k.Ray;
 import org.pt3k.Vec3;
 import org.pt3k.Wrapper;
-import org.pt3k.hit_record;
+import org.pt3k.HitRecord;
 
 /**
  * Material reprezentujacy powierzchnie metalowa.
  */
 public class Metal implements Material{
 
-    public Vec3 albedo;
+    private Vec3 albedo;
 
     public Metal(Vec3 albedo) {
         this.albedo = albedo;
     }
 
     @Override
-    public boolean scatter(Ray r_in, hit_record rec, Wrapper wrapper) {
+    public boolean scatter(Ray r_in, HitRecord rec, Wrapper wrapper) {
         Vec3 reflected = Vec3.reflect(r_in.getDirection().unit_vector(), rec.normal);
         wrapper.scattered = new Ray(rec.p, reflected);
         wrapper.attenuation = albedo;

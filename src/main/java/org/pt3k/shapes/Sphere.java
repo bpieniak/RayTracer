@@ -2,17 +2,17 @@ package org.pt3k.shapes;
 
 import org.pt3k.Ray;
 import org.pt3k.Vec3;
-import org.pt3k.hit_record;
+import org.pt3k.HitRecord;
 import org.pt3k.materials.Material;
 
 /**
  * Klasa reprezentujaca sfere.
  */
-public class Sphere implements hittable{
+public class Sphere implements Hittable {
 
-    public Vec3 center;
-    public float radius;
-    public Material material;
+    private Vec3 center;
+    private float radius;
+    private Material material;
 
     public Sphere(Vec3 cen, float radius, Material material) {
         this.center = cen;
@@ -29,7 +29,7 @@ public class Sphere implements hittable{
      * @return czy promien trafil
      */
     @Override
-    public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
+    public boolean hit(Ray r, float t_min, float t_max, HitRecord hitRecord) {
 
         Vec3 oc = r.getOrigin().sub(center);
         float a = r.getDirection().dot(r.getDirection());
@@ -64,7 +64,7 @@ public class Sphere implements hittable{
         return false;
     }
 
-    void getSphereUV(Vec3 p, hit_record hitRecord) {
+    void getSphereUV(Vec3 p, HitRecord hitRecord) {
 
         double phi = Math.atan2(p.getZ(),p.getX());
         double theta = Math.asin(p.getY());

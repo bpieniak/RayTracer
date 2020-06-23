@@ -1,11 +1,8 @@
 package org.pt3k.GUI;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -23,11 +20,9 @@ import org.pt3k.Camera;
 import org.pt3k.MultithreadRenderer;
 import org.pt3k.Scene;
 import org.pt3k.Vec3;
-import org.pt3k.materials.ImageTexture;
-import org.pt3k.shapes.hittable;
+import org.pt3k.shapes.Hittable;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +34,6 @@ import java.util.ArrayList;
  * Klasa obslugujaca wszystkie operacje w GUI aplikacji.
  */
 public class AppController {
-
-    Scene mainScene, aboutScene;
 
     @FXML TextField resolutionX;
     @FXML TextField resolutionY;
@@ -62,12 +55,12 @@ public class AppController {
     @FXML TextField tfBackgroundB;
     @FXML ChoiceBox<String> cbSceneSelector;
 
-    int width, height;
-    WritableImage image;
-    String currScene;
-    ArrayList<hittable> currSceneList;
+    private int width, height;
+    private WritableImage image;
+    private String currScene;
+    private ArrayList<Hittable> currSceneList;
 
-    String[] scenes = new String[]{"Five spheres", "Random spheres", "Cornell box", "Earth"};
+    private String[] scenes = new String[]{"Five spheres", "Random spheres", "Cornell box", "Earth", "Rotated cubes", "Cylinder"};
 
     public AppController() { }
 
@@ -135,7 +128,7 @@ public class AppController {
 
         Vec3 backgroundColor = new Vec3(backgroundR, backgroundG, backgroundB);
 
-        ArrayList<hittable> scene = getScene();
+        ArrayList<Hittable> scene = getScene();
 
 
         long start = System.currentTimeMillis();
@@ -191,7 +184,7 @@ public class AppController {
         });
     }
 
-    public ArrayList<hittable> getScene() throws IOException {
+    public ArrayList<Hittable> getScene() throws IOException {
 
         String selected = cbSceneSelector.getValue();
 
@@ -204,13 +197,18 @@ public class AppController {
         }else if (selected.equals(scenes[1])) {
             currSceneList = Scene.randomScene();
             currScene = scenes[1];
-        }
-        else if (selected.equals(scenes[2])){
+        } else if (selected.equals(scenes[2])){
             currSceneList = Scene.cornellBox();
             currScene = scenes[2];
-        } else {
+        } else if(selected.equals(scenes[3])) {
             currSceneList = Scene.earthScene();
             currScene = scenes[3];
+        } else if(selected.equals(scenes[4])){
+            currSceneList = Scene.rotatedCubes();
+            currScene = scenes[4];
+        } else if(selected.equals(scenes[5])){
+            currSceneList = Scene.cylinder();
+            currScene = scenes[5];
         }
 
         return currSceneList;
@@ -262,7 +260,30 @@ public class AppController {
             tfBackgroundR.setText("0.2");
             tfBackgroundG.setText("0.2");
             tfBackgroundB.setText("0.6");
+        } else if(value.equals(scenes[4])) {
+            FOV.setText("40");
+            lookFromX.setText("30");
+            lookFromY.setText("15");
+            lookFromZ.setText("10");
+            lookAtX.setText("0");
+            lookAtY.setText("0");
+            lookAtZ.setText("0");
+            tfBackgroundR.setText("1");
+            tfBackgroundG.setText("1");
+            tfBackgroundB.setText("1");
+        } else if(value.equals(scenes[5])) {
+            FOV.setText("60");
+            lookFromX.setText("10");
+            lookFromY.setText("5");
+            lookFromZ.setText("3");
+            lookAtX.setText("0");
+            lookAtY.setText("0");
+            lookAtZ.setText("0");
+            tfBackgroundR.setText("1");
+            tfBackgroundG.setText("1");
+            tfBackgroundB.setText("1");
         }
+
     }
 
     @FXML

@@ -1,9 +1,8 @@
 package org.pt3k;
 
-import org.pt3k.shapes.hittable;
+import org.pt3k.shapes.Hittable;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -11,20 +10,18 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Worker implements Runnable {
 
-    int width, height;
-    int numberOfSamples, maxDepth;
-    int start, end;
+    private int width, height;
+    private int numberOfSamples, maxDepth;
+    private int start, end;
 
-    CountDownLatch countDownLatch;
+    private CountDownLatch countDownLatch;
 
-    byte[] image;
+    private byte[] image;
 
-    hit_record rec;
-    ArrayList<hittable> sceneArray;
-    Vec3 backgroundColor;
-    Camera cam;
-
-    Random generator;
+    private HitRecord rec;
+    private ArrayList<Hittable> sceneArray;
+    private Vec3 backgroundColor;
+    private Camera cam;
 
     /**
      * Konstruktor klasy Worker.
@@ -40,7 +37,7 @@ public class Worker implements Runnable {
      * @param rs ArrayList wszystkich obiektow w scenie
      * @param bg Kolor tla.
      */
-    Worker(int width, int height, final byte[] image, int threadCount, int threadID, CountDownLatch cdl, int s, int d, Camera c,ArrayList<hittable> rs, Vec3 bg) {
+    Worker(int width, int height, final byte[] image, int threadCount, int threadID, CountDownLatch cdl, int s, int d, Camera c, ArrayList<Hittable> rs, Vec3 bg) {
         this.width = width;
         this.height = height;
         this.image = image;
@@ -57,10 +54,8 @@ public class Worker implements Runnable {
         if(threadID == threadCount-1)
             end = height;
 
-        rec = new hit_record();
-        generator = new Random();
+        rec = new HitRecord();
     }
-
 
     /**
      * Metoda klasy Runnable ktora tworzy promienie z kamery do sceny, oblicza kolor kazdego pixela
@@ -82,7 +77,7 @@ public class Worker implements Runnable {
                     float v = ((x + MyRandom.randomFloatInRange(-1,1))/(float)height);
 
                     Ray r = cam.getRay(u,v);
-                    color = color.add(ray_color(r,background,scene,maxDepth));
+                    color = color.add(rayColor(r,background,scene,maxDepth));
                 }
                 color.scale(numberOfSamples);
 
@@ -104,7 +99,7 @@ public class Worker implements Runnable {
      * @param depth glebokosc promienia
      * @return obliczony kolor promienia
      */
-    public Vec3 ray_color(final Ray r, Vec3 background,Scene world, int depth) {
+    public Vec3 rayColor(final Ray r, Vec3 background,Scene world, int depth) {
 
         Wrapper wrapper = new Wrapper();
 
@@ -121,7 +116,7 @@ public class Worker implements Runnable {
         if(!rec.material.scatter(r,rec,wrapper))
             return emitted;
 
-        return (ray_color(wrapper.scattered,background,world,depth-1).mulvec(wrapper.attenuation)).add(emitted);
+        return (rayColor(wrapper.scattered,background,world,depth-1).mulvec(wrapper.attenuation)).add(emitted);
     }
 
     private byte intToByte(int i) {

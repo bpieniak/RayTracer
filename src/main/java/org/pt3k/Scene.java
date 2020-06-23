@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scene implements hittable {
+public class Scene implements Hittable {
 
-    List<hittable> list;
+    private List<Hittable> list;
 
-    public Scene(List<hittable> list) {
+    public Scene(List<Hittable> list) {
         this.list = list;
     }
 
@@ -24,12 +24,12 @@ public class Scene implements hittable {
      * @return czy promien trafil
      */
     @Override
-    public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
-         hit_record rec = new hit_record();
+    public boolean hit(Ray r, float t_min, float t_max, HitRecord hitRecord) {
+         HitRecord rec = new HitRecord();
          boolean hit_anything = false;
          float closest = t_max;
 
-         for(hittable h : list) {
+         for(Hittable h : list) {
              if(h.hit(r,t_min,closest,rec)) {
                  hit_anything = true;
                  closest = rec.t;
@@ -45,8 +45,8 @@ public class Scene implements hittable {
          return hit_anything;
     }
 
-    public static ArrayList<hittable> fiveSpheres() throws IOException {
-        ArrayList<hittable> worldList = new ArrayList<>();
+    public static ArrayList<Hittable> fiveSpheres() throws IOException {
+        ArrayList<Hittable> worldList = new ArrayList<>();
 
         Checker checker = new Checker(
                 new SolidColor(0.2f,0.2f,0.2f),
@@ -55,9 +55,9 @@ public class Scene implements hittable {
 
         Texture earthTexture = new ImageTexture("earth.jpg");
         Material earthSurface = new Lambertian(earthTexture);
-        Texture marsTexture = new ImageTexture("mars.jpg");
+        Texture marsTexture = new ImageTexture();
         Material marsSurface = new Lambertian(marsTexture);
-        Texture neptuneTexture = new ImageTexture("neptune.jpg");
+        Texture neptuneTexture = new ImageTexture();
         Material neptuneSurface = new Lambertian(neptuneTexture);
 
         worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
@@ -70,8 +70,8 @@ public class Scene implements hittable {
         return worldList;
     }
 
-    public static ArrayList<hittable> randomScene() {
-        ArrayList<hittable> worldList = new ArrayList<>();
+    public static ArrayList<Hittable> randomScene() throws IOException {
+        ArrayList<Hittable> worldList = new ArrayList<>();
 
         Checker checker = new Checker(
                 new SolidColor(0.2f,0.8f,0.2f),
@@ -103,18 +103,25 @@ public class Scene implements hittable {
         worldList.add(new Sphere(new Vec3(-4,1,0),1,new Dielectric(1.5f)));
         worldList.add(new Sphere(new Vec3(4,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
 
+        /*
         worldList.add(new XZrectangle(-0.5f,0.5f,-0.5f,0.5f,0,diffuseLight));
         worldList.add(new XZrectangle(-0.5f,0.5f,-0.5f,0.5f,1,diffuseLight));
         worldList.add(new XYrectangle(-0.5f,0.5f,0f,1f,-0.5f,diffuseLight));
         worldList.add(new XYrectangle(-0.5f,0.5f,0f,1f,0.5f,diffuseLight));
         worldList.add(new YZrectangle(-0.5f,0.5f,0f,1f,-0.5f,diffuseLight));
         worldList.add(new YZrectangle(-0.5f,0.5f,0f,1f,0.5f,diffuseLight));
+         */
+
+        Hittable cube = new Cube(0.5f,0f,0.5f,1f,1f,2f,diffuseLight);
+        cube = new RotateY(cube,30);
+
+        worldList.add(cube);
 
         return worldList;
     }
 
-    public static ArrayList<hittable> cornellBox() throws IOException {
-        ArrayList<hittable> worldList = new ArrayList<>();
+    public static ArrayList<Hittable> cornellBox() throws IOException {
+        ArrayList<Hittable> worldList = new ArrayList<>();
 
         Material red = new Lambertian(new SolidColor(0.8f,0.1f,0.1f));
         Material green = new Lambertian(new SolidColor(0.1f,0.8f,0.1f));
@@ -139,12 +146,12 @@ public class Scene implements hittable {
         return worldList;
     }
 
-    public static ArrayList<hittable> earthScene() throws IOException {
-        ArrayList<hittable> worldList = new ArrayList<>();
+    public static ArrayList<Hittable> earthScene() throws IOException {
+        ArrayList<Hittable> worldList = new ArrayList<>();
 
         DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(80,80,80));
 
-        Texture earthTexture = new ImageTexture("earth.jpg");
+        Texture earthTexture = new ImageTexture();
         Material earthSurface = new Lambertian(earthTexture);
 
         worldList.add(new Sphere(new Vec3(0,0,0),4,earthSurface));
@@ -152,4 +159,39 @@ public class Scene implements hittable {
 
         return worldList;
     }
+
+    public static ArrayList<Hittable> rotatedCubes() throws IOException {
+        ArrayList<Hittable> worldList = new ArrayList<>();
+
+        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(new ImageTexture())));
+
+        Hittable cubeCenter = new Cube(0.5f,0f,0.5f,4f,4f,6f,new Lambertian(new ImageTexture()));
+        worldList.add(cubeCenter);
+
+        Hittable cubeRight = new Cube(5f,0f,0.5f,4f,4f,6f, new Lambertian(new ImageTexture()));
+        cubeRight = new RotateY(cubeRight,45);
+        worldList.add(cubeRight);
+
+        Hittable cubeLeft = new Cube(-5f,0f,0.5f,4f,4f,6f, new Metal(new Vec3(0.5f,0.5f,0.9f)));
+        cubeLeft = new RotateY(cubeLeft,-45);
+        worldList.add(cubeLeft);
+
+        return worldList;
+    }
+
+    public static ArrayList<Hittable> cylinder() throws IOException {
+        ArrayList<Hittable> worldList = new ArrayList<>();
+
+        Checker checker = new Checker(
+                new SolidColor(0.2f,0.8f,0.2f),
+                new SolidColor(0.9f,0.9f,0.9f)
+        );
+
+        worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
+
+        worldList.add(new Cylinder(new Vec3(0,0,0), 2, 5, new Lambertian(new ImageTexture())));
+
+        return worldList;
+    }
+
 }

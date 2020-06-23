@@ -1,6 +1,6 @@
 package org.pt3k;
 
-import org.pt3k.shapes.hittable;
+import org.pt3k.shapes.Hittable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,13 +16,13 @@ public class MultithreadRenderer {
     public int numberOfSamples;
     public int maxDepth;
     public byte[] pixels;
-    hit_record rec;
-    Camera cam;
-    Vec3 background;
-    ArrayList<hittable> scene;
-    Random generator;
+    private HitRecord rec;
+    private Camera cam;
+    private Vec3 background;
+    private ArrayList<Hittable> scene;
+    private Random generator;
 
-    public MultithreadRenderer(int width, int height, int numberOfSamples, int maxDepth, Camera c, Vec3 bg, ArrayList<hittable> s) {
+    public MultithreadRenderer(int width, int height, int numberOfSamples, int maxDepth, Camera c, Vec3 bg, ArrayList<Hittable> s) {
         this.width = width;
         this.height = height;
         this.numberOfSamples = numberOfSamples;
@@ -33,7 +33,7 @@ public class MultithreadRenderer {
         scene = s;
         pixels = new byte[width*height*3];
         generator = new Random();
-        rec = new hit_record();
+        rec = new HitRecord();
     }
 
     public byte[] render() throws InterruptedException {

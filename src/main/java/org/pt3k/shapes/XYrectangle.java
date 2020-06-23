@@ -2,16 +2,16 @@ package org.pt3k.shapes;
 
 import org.pt3k.Ray;
 import org.pt3k.Vec3;
-import org.pt3k.hit_record;
+import org.pt3k.HitRecord;
 import org.pt3k.materials.Material;
 
 /**
  * Prostokat lezacy w osi XY.
  */
-public class XYrectangle implements hittable{
+public class XYrectangle implements Hittable {
 
-    float x0, x1, y0, y1, k;
-    Material material;
+    private float x0, x1, y0, y1, k;
+    private Material material;
 
     public XYrectangle(float x0, float x1, float y0, float y1, float k, Material mat) {
         this.x0 = x0;
@@ -31,7 +31,7 @@ public class XYrectangle implements hittable{
      * @return czy promien trafil
      */
     @Override
-    public boolean hit(Ray r, float t_min, float t_max, hit_record hitRecord) {
+    public boolean hit(Ray r, float t_min, float t_max, HitRecord hitRecord) {
 
         float t = (k-r.getOrigin().getZ())/r.getDirection().getZ();
         if(t < t_min || t > t_max)

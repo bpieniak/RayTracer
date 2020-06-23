@@ -7,7 +7,7 @@ import org.pt3k.Vec3;
  */
 public class SolidColor implements Texture {
 
-    Vec3 color;
+    private Vec3 color;
 
     SolidColor() {};
     public SolidColor(Vec3 c) {

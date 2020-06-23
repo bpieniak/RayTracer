@@ -3,22 +3,20 @@ package org.pt3k.materials;
 import org.pt3k.Ray;
 import org.pt3k.Vec3;
 import org.pt3k.Wrapper;
-import org.pt3k.hit_record;
-
-import java.util.Random;
+import org.pt3k.HitRecord;
 
 /**
  * Material dielektryk. Po trafieniu promienia w ten material promien ulega jednoczesnie odbiciu i zalamaniu.
  */
 public class Dielectric implements Material {
 
-    float refIdx;
+    private float refIdx;
     public Dielectric(float ri) {
         refIdx = ri;
     }
 
     @Override
-    public boolean scatter(Ray r_in, hit_record rec, Wrapper wrapper) {
+    public boolean scatter(Ray r_in, HitRecord rec, Wrapper wrapper) {
         wrapper.attenuation = new Vec3(1,1,1);
         float etaiOverEtat;
         if (rec.front_face) {

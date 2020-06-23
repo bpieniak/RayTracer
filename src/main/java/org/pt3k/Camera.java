@@ -4,10 +4,10 @@ package org.pt3k;
  * Klasa reprezentujaca kamera z ktorej wysylane sa promienie.
  */
 public class Camera {
-    public Vec3 lower_left_corner;
-    public Vec3 horizontal;
-    public Vec3 vertical;
-    public Vec3 origin;
+    private Vec3 lower_left_corner;
+    private Vec3 horizontal;
+    private Vec3 vertical;
+    private Vec3 origin;
 
      public Camera(float vfov, float aspect, Vec3 lookfrom, Vec3 lookat, Vec3 vup) {
          Vec3 u, v, w;

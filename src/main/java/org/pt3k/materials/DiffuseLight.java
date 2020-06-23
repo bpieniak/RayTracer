@@ -3,20 +3,20 @@ package org.pt3k.materials;
 import org.pt3k.Ray;
 import org.pt3k.Vec3;
 import org.pt3k.Wrapper;
-import org.pt3k.hit_record;
+import org.pt3k.HitRecord;
 
 /**
  * Material reprezentujacy zrodlo swiatlo.
  */
 public class DiffuseLight implements Material {
-    Texture emit;
+    private Texture emit;
 
     public DiffuseLight(Texture a) {
         emit = a;
     }
 
     @Override
-    public boolean scatter(Ray r_in, hit_record rec, Wrapper wrapper) {
+    public boolean scatter(Ray r_in, HitRecord rec, Wrapper wrapper) {
         return false;
     }
 

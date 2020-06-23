@@ -7,7 +7,7 @@ import org.pt3k.Vec3;
  */
 public class Checker implements Texture {
 
-    Texture odd, even;
+    private Texture odd, even;
 
     public Checker(Texture t0, Texture t1) {
         odd = t0;
