@@ -53,7 +53,7 @@ public class Scene implements Hittable {
                 new SolidColor(0.9f,0.9f,0.9f)
         );
 
-        Texture earthTexture = new ImageTexture("earth.jpg");
+        Texture earthTexture = new ImageTexture("Textures/earth.jpg");
         Material earthSurface = new Lambertian(earthTexture);
         Texture marsTexture = new ImageTexture();
         Material marsSurface = new Lambertian(marsTexture);
@@ -78,20 +78,20 @@ public class Scene implements Hittable {
                 new SolidColor(0.9f,0.9f,0.9f)
         );
 
-        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(10,10,10));
+        DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(13,13,13));
 
         worldList.add(new Sphere(new Vec3(0,-1000,0), 1000, new Lambertian(checker)));
 
         int i = 1;
-        for(int a = -6; a < 6; a = a+4) {
-            for(int b = -6; b < 6; b = b+4) {
+        for(int a = -4; a < 4; a = a+2) {
+            for(int b = -4; b < 4; b = b+2) {
                 float choose_mat = (float) Math.random();
                 Vec3 center = new Vec3((float )(a + 2*Math.random()), 0.2f, (float )(b + 2*Math.random()));
 
-                if(choose_mat < 0.9) {
+                if(choose_mat < 0.6) {
                     Vec3 albedo = MyRandom.randomVector().mulvec(MyRandom.randomVector());
                     worldList.add(new Sphere(center,0.2f,new Lambertian(new SolidColor(albedo))));
-                } else if(choose_mat < 0.95) {
+                } else if(choose_mat < 0.85) {
                     Vec3 albedo = MyRandom.randomVector();
                     worldList.add(new Sphere(center, 0.2f, new Metal(albedo)));
                 } else {
@@ -100,19 +100,10 @@ public class Scene implements Hittable {
             }
         }
 
-        worldList.add(new Sphere(new Vec3(-4,1,0),1,new Dielectric(1.5f)));
+        worldList.add(new Sphere(new Vec3(-2,1,1),1,new Dielectric(1.5f)));
         worldList.add(new Sphere(new Vec3(4,1,0),1,new Metal(new Vec3(0.7f,0.6f,0.5f))));
 
-        /*
-        worldList.add(new XZrectangle(-0.5f,0.5f,-0.5f,0.5f,0,diffuseLight));
-        worldList.add(new XZrectangle(-0.5f,0.5f,-0.5f,0.5f,1,diffuseLight));
-        worldList.add(new XYrectangle(-0.5f,0.5f,0f,1f,-0.5f,diffuseLight));
-        worldList.add(new XYrectangle(-0.5f,0.5f,0f,1f,0.5f,diffuseLight));
-        worldList.add(new YZrectangle(-0.5f,0.5f,0f,1f,-0.5f,diffuseLight));
-        worldList.add(new YZrectangle(-0.5f,0.5f,0f,1f,0.5f,diffuseLight));
-         */
-
-        Hittable cube = new Cube(0.5f,0f,0.5f,1f,1f,2f,diffuseLight);
+        Hittable cube = new Cube(0f,0f,0f,1f,1f,2f,diffuseLight);
         cube = new RotateY(cube,30);
 
         worldList.add(cube);
@@ -128,7 +119,7 @@ public class Scene implements Hittable {
         Material white = new Lambertian(new SolidColor(0.8f,0.8f,0.8f));
         DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(7,7,7));
 
-        Texture earthTexture = new ImageTexture("earth.jpg");
+        Texture earthTexture = new ImageTexture("Textures/earth.jpg");
         Material earthSurface = new Lambertian(earthTexture);
 
         worldList.add(new Sphere(new Vec3(138,100,300),100,new Dielectric(1.5f)));
@@ -151,7 +142,7 @@ public class Scene implements Hittable {
 
         DiffuseLight diffuseLight = new DiffuseLight(new SolidColor(80,80,80));
 
-        Texture earthTexture = new ImageTexture();
+        Texture earthTexture = new ImageTexture("Textures/earth.jpg");
         Material earthSurface = new Lambertian(earthTexture);
 
         worldList.add(new Sphere(new Vec3(0,0,0),4,earthSurface));
