@@ -1,6 +1,6 @@
 # RayTracer
 ### Java CPU multithreaded ray tracer with GUI
-![RayTracerInterface](https://raw.githubusercontent.com/pt3k/RayTracer/master/Rendered%20pictures/Interface.png?token=ADG6UFKWS6XMNDLOBHC7VUK67OTU6)
+![RayTracerInterface](Rendered%20pictures/Interface.png)
 - Ray Tracer mostly based on Peter Shirley book series [Ray Tracing in One Weekend](https://raytracing.github.io/). Interface is made using JavaFX with help of [Scene Builder](https://gluonhq.com/products/scene-builder/).
 
 ## Features
@@ -31,12 +31,12 @@
 
 ## Scenes
 ### Five spheres
-![](https://raw.githubusercontent.com/pt3k/RayTracer/master/Rendered%20pictures/fiveSpheres.png?token=ADG6UFNTNYARUIQ2J6UDFJC67OUBW)
+![](Rendered%20pictures/fiveSpheres.png)
 ### Random spheres
-![](https://raw.githubusercontent.com/pt3k/RayTracer/master/Rendered%20pictures/light2.png?token=ADG6UFOKSOU524GCVNGGGP267OUCA)
+![](Rendered%20pictures/light2.png)
 ### Cornell box
-![](https://raw.githubusercontent.com/pt3k/RayTracer/master/Rendered%20pictures/cornell.png?token=ADG6UFMGN2LS23LCNM6L4J267OUA4)
+![](Rendered%20pictures/cornell.png)
 ### Earth
-![](https://raw.githubusercontent.com/pt3k/RayTracer/master/Rendered%20pictures/earth.png?token=ADG6UFNWIGC3G45JDEBSVBC67OUBM)
+![](Rendered%20pictures/earth.png)
 ### Cylinder
-![](https://raw.githubusercontent.com/pt3k/RayTracer/master/Rendered%20pictures/cylinder.png?token=ADG6UFOZ3U2OQC3JR5JMOCK67OUBI)
+![](Rendered%20pictures/cylinder.png)
